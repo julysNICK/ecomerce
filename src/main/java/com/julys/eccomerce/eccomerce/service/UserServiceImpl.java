@@ -45,4 +45,10 @@ public class UserServiceImpl implements UserService {
     return userDAO.deleteUser(id);
   }
 
+  @Override
+  public User loadUserByUsername(String username) {
+
+    return userDAO.loadUserByUsername(username);
+  }
+
 }

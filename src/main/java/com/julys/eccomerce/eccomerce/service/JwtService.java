@@ -6,6 +6,12 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.JweHeader;
@@ -19,6 +25,7 @@ import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
 import lombok.var;
 
+@Component
 public class JwtService {
 
   private static final String PRIVATE_KEY = "acacac";
@@ -27,7 +34,8 @@ public class JwtService {
 
   public String extractUsername(String jwt) {
 
-    return null;
+    return extractClaim(jwt, Claims::getSubject);
+
   }
 
   public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -38,13 +46,26 @@ public class JwtService {
 
   }
 
+  public String generateToken(UserDetails userDetails) {
+    return generateToken(new HashMap<>(), userDetails);
+  }
+
+  public String generateToken(
+      Map<String, Object> extraClaims,
+      UserDetails userDetails) {
+    return Jwts.builder().claims(extraClaims).subject(userDetails.getUsername())
+        .issuedAt(new java.util.Date(System.currentTimeMillis()))
+        .expiration(new java.util.Date(System.currentTimeMillis() + EXPIRATION_TIME))
+        .signWith(getSignatureVerificationKey()).compact();
+  }
+
   private Claims extractAllClaims(String jwt) {
     return Jwts.parser().keyLocator(new Locator<Key>() {
 
       @Override
       public Key locate(Header header) {
         if (header instanceof JwsHeader) {
-          return getSignatureVerificationKey(((JwsHeader) header).getAlgorithm());
+          return getSignatureVerificationKey();
 
         }
 
@@ -52,6 +73,20 @@ public class JwtService {
       }
 
     }).build().parseSignedClaims(jwt).getPayload();
+  }
+
+  public Boolean isTokenValid(String jwt, UserDetails userDetails) {
+    final String username = extractUsername(jwt);
+
+    return (username.equals(userDetails.getUsername()) && !isTokenExpired(jwt));
+  }
+
+  private boolean isTokenExpired(String jwt) {
+    return extractExpiration(jwt).before(new java.util.Date());
+  }
+
+  private Date extractExpiration(String jwt) {
+    return extractClaim(jwt, Claims::getExpiration);
   }
 
   private Key getDecriptionKey(JweHeader header) {
@@ -63,7 +98,6 @@ public class JwtService {
       return secretKey;
 
     } catch (IllegalArgumentException | SignatureException | WeakKeyException e) {
-      // TODO: handle exception
 
       e.printStackTrace();
       return null;
@@ -71,14 +105,14 @@ public class JwtService {
     }
   }
 
-  private Key getSignatureVerificationKey(String algorithm) {
+  private Key getSignatureVerificationKey() {
     try {
       byte[] keyBytes = Decoders.BASE64.decode(PRIVATE_KEY);
       SecretKey secretKey = Keys.hmacShaKeyFor(keyBytes);
 
       return secretKey;
     } catch (IllegalArgumentException e) {
-      // TODO: handle exception
+
       e.printStackTrace();
       return null;
     }

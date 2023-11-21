@@ -64,4 +64,10 @@ public class UserDAOJpaImpl implements UserDAO {
     return userToDelete;
   }
 
+  @Override
+  public User loadUserByUsername(String username) {
+    // TODO Auto-generated method stub
+    return userSql.findByUsername(username);
+  }
+
 }
