@@ -42,7 +42,12 @@ public class ApplicationConfig {
   }
 
   @Bean
-  private PasswordEncoder passwordEncoder() {
+  public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public AuthenticationManager AuthenticationManager(AuthenticationConfiguration config) throws Exception {
+    return config.getAuthenticationManager();
   }
 }

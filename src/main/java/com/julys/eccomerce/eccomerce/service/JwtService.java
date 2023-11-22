@@ -28,7 +28,7 @@ import lombok.var;
 @Component
 public class JwtService {
 
-  private static final String PRIVATE_KEY = "acacac";
+  private static final String PRIVATE_KEY = "fhMCgW2pur8g1FkFq0k5WdMUtUuPttUdC6p6lVVI1JP05IyBcNXxJih819ujFXcmOLi3AG0xS+iOrvL5K03RwlVkAzqr7DrSPdUxshI+H3U9PSiY6Poi6tPj/Njyrm7TNmZqlbjLQ4yICWlApWhX2kXqlmzmfCfBseU4S01juwUiMTuPxWhHhXKBOlesA01qF+zMj3v/Z+bewe0f20yjR9lp5MqV8UG9lrlHtCUmLJE8nn/GGipru8WrFGS1995p4FmRBiNgSqMjzyLZMFXqf1vL90Modxw8h3A37+cTTgJJNYdWrTnTIXS3xszPeiXRkimwv/OvdsNNM9ZG8Tx/h3O6AwObb/paKLHl4QQQG5c=";
 
   private static final int EXPIRATION_TIME = 86400000;
 
@@ -112,7 +112,7 @@ public class JwtService {
 
       return secretKey;
     } catch (IllegalArgumentException e) {
-
+      System.out.println("JWT token compact of handler are invalid.");
       e.printStackTrace();
       return null;
     }

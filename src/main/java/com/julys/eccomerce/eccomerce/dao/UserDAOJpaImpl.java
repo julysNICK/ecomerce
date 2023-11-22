@@ -70,4 +70,10 @@ public class UserDAOJpaImpl implements UserDAO {
     return userSql.findByUsername(username);
   }
 
+  @Override
+  public User findByEmail(String email) {
+    // TODO Auto-generated method stub
+    return userSql.findByEmail(email);
+  }
+
 }

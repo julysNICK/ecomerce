@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.catalina.Role;
 import org.hibernate.annotations.DynamicUpdate;
-
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,10 +39,12 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private com.julys.eccomerce.eccomerce.entity.Role role;
 
+  @CreatedDate
   @Column(name = "password_changed_at", nullable = true)
   private java.sql.Timestamp passwordChangedAt;
 
-  @Column(name = "created_at", nullable = false)
+  @CreatedDate
+  @Column(name = "created_at", nullable = true)
   private java.sql.Timestamp createdAt;
 
   public Long getId() {
