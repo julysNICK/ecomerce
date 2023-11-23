@@ -66,12 +66,15 @@ public class UserDAOJpaImpl implements UserDAO {
 
   @Override
   public User loadUserByUsername(String username) {
+
     // TODO Auto-generated method stub
+
     return userSql.findByUsername(username);
   }
 
   @Override
   public User findByEmail(String email) {
+
     // TODO Auto-generated method stub
     return userSql.findByEmail(email);
   }

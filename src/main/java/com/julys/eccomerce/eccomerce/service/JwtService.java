@@ -53,6 +53,13 @@ public class JwtService {
   public String generateToken(
       Map<String, Object> extraClaims,
       UserDetails userDetails) {
+
+    System.out.println("generateToken");
+
+    System.out.println("userDetails.getUsername() " + userDetails.getUsername());
+
+    System.out.println("extraClaims " + extraClaims);
+
     return Jwts.builder().claims(extraClaims).subject(userDetails.getUsername())
         .issuedAt(new java.util.Date(System.currentTimeMillis()))
         .expiration(new java.util.Date(System.currentTimeMillis() + EXPIRATION_TIME))

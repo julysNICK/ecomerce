@@ -1,5 +1,6 @@
 package com.julys.eccomerce.eccomerce.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,15 +18,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
+  @Autowired
   private UserSql userSql;
 
   @Bean
   public UserDetailsService userDetailsService() {
-    return username -> userSql.findByUsername(username);
+
+    return username -> userSql.findByEmail(username);
   }
 
   @Bean
   public AuthenticationProvider authenticationProvider() {
+
     DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
     provider.setUserDetailsService(userDetailsService());
@@ -38,16 +42,19 @@ public class ApplicationConfig {
 
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+
     return config.getAuthenticationManager();
   }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
+
     return new BCryptPasswordEncoder();
   }
 
   @Bean
   public AuthenticationManager AuthenticationManager(AuthenticationConfiguration config) throws Exception {
+
     return config.getAuthenticationManager();
   }
 }
