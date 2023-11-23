@@ -128,7 +128,6 @@ public class User implements UserDetails {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     System.out.println("getAuthorities");
-    // TODO Auto-generated method stub
     System.out.println(role.name());
     return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
   }
@@ -136,28 +135,24 @@ public class User implements UserDetails {
   @Override
   public boolean isAccountNonExpired() {
     System.out.println("isAccountNonExpired");
-    // TODO Auto-generated method stub
     return true;
   }
 
   @Override
   public boolean isAccountNonLocked() {
     System.out.println("isAccountNonLocked");
-    // TODO Auto-generated method stub
     return true;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
     System.out.println("isCredentialsNonExpired");
-    // TODO Auto-generated method stub
     return true;
   }
 
   @Override
   public boolean isEnabled() {
     System.out.println("isEnabled");
-    // TODO Auto-generated method stub
     return true;
   }
 

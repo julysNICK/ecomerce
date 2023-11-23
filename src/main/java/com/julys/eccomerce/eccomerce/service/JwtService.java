@@ -4,8 +4,6 @@ import java.security.Key;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,12 +16,10 @@ import io.jsonwebtoken.JweHeader;
 import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Locator;
-import io.jsonwebtoken.Jwts.KEY;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
-import lombok.var;
 
 @Component
 public class JwtService {
@@ -38,6 +34,8 @@ public class JwtService {
 
   }
 
+  // public <T> T extractClaim(String token, Function<Claims, T> claimsResolver)
+  // this method will extract a particular claim from the token.
   public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
 
     final Claims claims = extractAllClaims(token);
@@ -46,19 +44,17 @@ public class JwtService {
 
   }
 
+  // public String generateToken(UserDetails userDetails) this method will return
+  // a token
   public String generateToken(UserDetails userDetails) {
     return generateToken(new HashMap<>(), userDetails);
   }
 
+  // public String generateToken: 1st parameter is a Map of extra claims, 2nd
+  // parameter is a UserDetails object this method will use to generate the token.
   public String generateToken(
       Map<String, Object> extraClaims,
       UserDetails userDetails) {
-
-    System.out.println("generateToken");
-
-    System.out.println("userDetails.getUsername() " + userDetails.getUsername());
-
-    System.out.println("extraClaims " + extraClaims);
 
     return Jwts.builder().claims(extraClaims).subject(userDetails.getUsername())
         .issuedAt(new java.util.Date(System.currentTimeMillis()))
@@ -66,6 +62,8 @@ public class JwtService {
         .signWith(getSignatureVerificationKey()).compact();
   }
 
+  // private Claims extractAllClaims(String jwt) this method will extract all the
+  // claims from the token.
   private Claims extractAllClaims(String jwt) {
     return Jwts.parser().keyLocator(new Locator<Key>() {
 
@@ -96,6 +94,8 @@ public class JwtService {
     return extractClaim(jwt, Claims::getExpiration);
   }
 
+  // private Key getDecriptionKey(JweHeader header) this method will return the
+  // key
   private Key getDecriptionKey(JweHeader header) {
     try {
       byte[] keyBytes = Decoders.BASE64.decode(PRIVATE_KEY);
@@ -112,6 +112,8 @@ public class JwtService {
     }
   }
 
+  // private Key getSignatureVerificationKey() this method will return the key to
+  // verify the signature.
   private Key getSignatureVerificationKey() {
     try {
       byte[] keyBytes = Decoders.BASE64.decode(PRIVATE_KEY);
