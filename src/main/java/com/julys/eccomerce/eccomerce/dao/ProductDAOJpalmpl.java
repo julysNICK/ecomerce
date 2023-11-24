@@ -9,11 +9,6 @@ import com.julys.eccomerce.eccomerce.bd.ProductSql;
 import com.julys.eccomerce.eccomerce.entity.Product;
 import com.julys.eccomerce.eccomerce.util.Util;
 
-/**
- * ProductDAOJpalmpl
- * 
- */
-
 @Component
 public class ProductDAOJpalmpl implements ProductDAO {
 

@@ -30,6 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
       @NonNull FilterChain filterChain)
       throws ServletException, IOException {
+
     // TODO Auto-generated method stub
 
     final String authorizationHeader = request.getHeader("Authorization");
@@ -38,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     final String userName;
 
     if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-
+      filterChain.doFilter(request, response);
       return;
     }
 

@@ -1,6 +1,8 @@
 package com.julys.eccomerce.eccomerce.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.support.SQLErrorCodes;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,27 +29,26 @@ public class AuthenticationController {
   private final AuthenticationManager authenticationManager;
 
   @PostMapping("/register")
-  public AuthenticationResponse register(@RequestBody User user) {
+  public ResponseEntity<?> register(@RequestBody User user) {
+    System.out.println("register");
+    System.out.println("user: " + user);
 
-    try {
-      user.setPassword(passwordEncoder111.encode(user.getPassword()));
-      user.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
+    user.setPassword(passwordEncoder111.encode(user.getPassword()));
+    user.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
 
-      userService.createUser(user);
+    userService.createUser(user);
 
-      var jwtToken = jwtService.generateToken(user);
+    var jwtToken = jwtService.generateToken(user);
 
-      return AuthenticationResponse.builder().token(jwtToken).build();
+    System.out.println("jwtToken: " + jwtToken);
 
-    } catch (Exception e) {
+    return ResponseEntity.ok(AuthenticationResponse.builder().token(jwtToken).build());
 
-      return AuthenticationResponse.builder().token(null).build();
-    }
   }
 
   @PostMapping("/login")
   public AuthenticationResponse login(@RequestBody AutheticationRequest user) {
-
+    System.out.println("login");
     try {
 
       authenticationManager.authenticate(

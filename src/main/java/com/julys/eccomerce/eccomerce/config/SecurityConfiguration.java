@@ -32,11 +32,11 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(request -> request.getServletPath().startsWith("/api/auth")).permitAll())
         .authorizeHttpRequests(authorize -> authorize
-            .anyRequest().hasRole("ADMIN"))
+            .anyRequest().authenticated())
         .authenticationProvider(
             authenticationProvider)
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        .logout(logout -> logout.logoutUrl("/api/auth/logout"));
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
     return http.build();
   }
 }
