@@ -1,12 +1,16 @@
 package com.julys.eccomerce.eccomerce.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
+
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,6 +37,18 @@ public class Order {
     return dateOrder;
   }
 
+  @ManyToOne
+  @JoinColumn(name = "user_id_order", nullable = false)
+  private User userOrderId;
+
+  public User getUserOrderId() {
+    return userOrderId;
+  }
+
+  public void setUserOrderId(User userOrder) {
+    this.userOrderId = userOrder;
+  }
+
   public void setDateOrder(LocalDateTime dateOrder) {
     this.dateOrder = dateOrder;
   }
@@ -48,14 +64,15 @@ public class Order {
     this.statusOrder = statusOrder;
   }
 
+  @CreatedDate
   @Column(name = "created_at", nullable = false, columnDefinition = "timestamptz default now()")
-  private LocalDateTime createdAt;
+  private java.sql.Timestamp createdAt;
 
-  public LocalDateTime getCreatedAt() {
+  public java.sql.Timestamp getCreatedAt() {
     return createdAt;
   }
 
-  public void setCreatedAt(LocalDateTime createdAt) {
+  public void setCreatedAt(java.sql.Timestamp createdAt) {
     this.createdAt = createdAt;
   }
 

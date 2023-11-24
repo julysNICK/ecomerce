@@ -1,5 +1,6 @@
 package com.julys.eccomerce.eccomerce.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.julys.eccomerce.eccomerce.dao.OrderDAO;
@@ -8,6 +9,7 @@ import com.julys.eccomerce.eccomerce.entity.Order;
 @Component
 public class OrderServiceImpl implements OrderService {
 
+  @Autowired
   private OrderDAO orderDAO;
 
   @Override

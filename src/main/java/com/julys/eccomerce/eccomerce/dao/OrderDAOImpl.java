@@ -4,13 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.julys.eccomerce.eccomerce.bd.OrderSql;
+import com.julys.eccomerce.eccomerce.bd.UserSql;
 import com.julys.eccomerce.eccomerce.entity.Order;
+import com.julys.eccomerce.eccomerce.entity.User;
 import com.julys.eccomerce.eccomerce.util.Util;
 
 @Component
 public class OrderDAOImpl implements OrderDAO {
   @Autowired
   private OrderSql orderSql;
+
+  @Autowired
+  private UserSql userSql;
 
   @Override
   public Order findById(Long id) {
@@ -22,6 +27,13 @@ public class OrderDAOImpl implements OrderDAO {
 
   @Override
   public Order createOrder(Order order) {
+
+    User user = userSql.findById(order.getUserOrderId().getId()).orElse(null);
+
+    if (user == null) {
+      return null;
+    }
+
     return orderSql.save(order);
   }
 
