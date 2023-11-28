@@ -17,6 +17,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -98,6 +99,20 @@ public class User implements UserDetails {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  /**
+   *
+   */
+  @OneToMany(mappedBy = "userOrderId")
+  private List<Order> orders;
+
+  public List<Order> getOrders() {
+    return orders;
+  }
+
+  public void setOrders(List<Order> orders) {
+    this.orders = orders;
   }
 
   /**

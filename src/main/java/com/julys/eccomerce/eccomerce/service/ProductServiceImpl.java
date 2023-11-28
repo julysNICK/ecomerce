@@ -31,17 +31,17 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public String createProduct(Product product) {
+  public Product createProduct(Product product) {
     return productDAO.createProduct(product);
   }
 
   @Override
-  public String updateProduct(Long id, Product product) {
+  public Product updateProduct(Long id, Product product) {
     return productDAO.updateProduct(id, product);
   }
 
   @Override
-  public String deleteProduct(Long id) {
+  public Product deleteProduct(Long id) {
     return productDAO.deleteProduct(id);
   }
 }

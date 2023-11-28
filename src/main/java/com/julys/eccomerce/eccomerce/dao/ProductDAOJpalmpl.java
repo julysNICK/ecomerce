@@ -31,24 +31,24 @@ public class ProductDAOJpalmpl implements ProductDAO {
   }
 
   @Override
-  public String createProduct(Product product) {
+  public Product createProduct(Product product) {
     productSql.save(product);
-    return "Product created";
+    return product;
   }
 
   @Override
-  public String updateProduct(Long id, Product product) {
+  public Product updateProduct(Long id, Product product) {
     var productToUpdate = productSql.findById(id).orElse(null);
     if (productToUpdate == null) {
       return null;
     }
     Util.copyNonNullProperties(product, productToUpdate);
     productSql.save(productToUpdate);
-    return "Product updated";
+    return productToUpdate;
   }
 
   @Override
-  public String deleteProduct(Long id) {
+  public Product deleteProduct(Long id) {
 
     var product = productSql.findById(id).orElse(null);
     if (product == null) {
@@ -57,7 +57,7 @@ public class ProductDAOJpalmpl implements ProductDAO {
 
     productSql.delete(product);
 
-    return "Product deleted";
+    return product;
   }
 
 }

@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.julys.eccomerce.eccomerce.entity.Product;
 import com.julys.eccomerce.eccomerce.error.ErrorBuilder;
 import com.julys.eccomerce.eccomerce.error.ErrorFormat;
+import com.julys.eccomerce.eccomerce.response.ProductErrorResponse;
+import com.julys.eccomerce.eccomerce.response.ProductListResponse;
+import com.julys.eccomerce.eccomerce.response.ProductResponse;
 import com.julys.eccomerce.eccomerce.service.ProductService;
 
 import com.julys.eccomerce.eccomerce.validator.ProductValidator;
@@ -50,6 +53,7 @@ public class ProductController {
   @ResponseBody
   public ResponseEntity findById(@PathVariable Long id) {
     HttpHeaders headers = new HttpHeaders();
+    ProductResponse productResponseJson = new ProductResponse();
 
     headers.add("Custom-Header", "my-custom-header");
 
@@ -59,22 +63,17 @@ public class ProductController {
       return new ErrorBuilder().buildResponseEntity(List.of("Product not found"), HttpStatus.NOT_FOUND);
     }
 
-    HashMap<String, Object> response = new HashMap<>();
+    productResponseJson.setStatus("OK");
+    productResponseJson.setMessage("Product found");
+    productResponseJson.setProduct(product);
 
-    response.put("status", HttpStatus.OK);
-    response.put("product", product);
-
-    return new ResponseEntity<>(response, headers, HttpStatus.OK);
-  }
-
-  @GetMapping("/")
-  public String index() {
-    return "Hello World";
+    return new ResponseEntity<>(productResponseJson.createJson(), headers, HttpStatus.OK);
   }
 
   @PostMapping("/")
-  public ResponseEntity createProduct(@RequestBody Product product) {
+  public ResponseEntity<?> createProduct(@RequestBody Product product) {
     HttpHeaders headers = new HttpHeaders();
+    ProductResponse productResponseJson = new ProductResponse();
 
     headers.add("Custom-Header", "my-custom-header");
 
@@ -84,45 +83,54 @@ public class ProductController {
       return new ErrorBuilder().buildResponseEntity(errors, HttpStatus.BAD_REQUEST);
     }
 
-    return new ResponseEntity<>(productService.createProduct(product), headers, HttpStatus.CREATED);
+    productResponseJson.setStatus("OK");
+    productResponseJson.setMessage("Product created");
+    productResponseJson.setProduct(product);
+
+    return new ResponseEntity<>(productResponseJson.createJson(), headers, HttpStatus.CREATED);
   }
 
   @PatchMapping("/{id}")
-  public ResponseEntity updateProduct(@PathVariable Long id, @RequestBody Product product) {
-
+  public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    ProductResponse productResponseJson = new ProductResponse();
     if (id == null) {
       ErrorFormat error = new ErrorFormat(HttpStatus.BAD_REQUEST, "Id is required");
       return new ErrorBuilder().buildResponseEntity(List.of(error.createError().get("error").toString()),
           HttpStatus.BAD_REQUEST);
     }
 
-    var response = productService.updateProduct(id, product);
+    Product response = productService.updateProduct(id, product);
 
     if (response == null) {
       return new ErrorBuilder().buildResponseEntity(List.of("Product not found"), HttpStatus.NOT_FOUND);
     }
 
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    productResponseJson.setStatus("OK");
+    productResponseJson.setMessage("Product updated");
+    productResponseJson.setProduct(response);
+
+    return new ResponseEntity<>(productResponseJson.createJson(), HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity deleteProduct(@PathVariable Long id) {
-    String response = productService.deleteProduct(id);
+  public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+    ProductResponse productResponseJson = new ProductResponse();
+    Product response = productService.deleteProduct(id);
 
     if (response == null) {
       return new ErrorBuilder().buildResponseEntity(List.of("Product not found"), HttpStatus.NOT_FOUND);
     }
 
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    productResponseJson.setStatus("OK");
+    productResponseJson.setMessage("Product deleted");
+    productResponseJson.setProduct(response);
+
+    return new ResponseEntity<>(productResponseJson.createJson(), HttpStatus.OK);
   }
 
   @GetMapping("/all")
-  public ResponseEntity allProducts() {
-    HttpHeaders headers = new HttpHeaders();
-
-    headers.add("Custom-Header", "my-custom-header");
-
-    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
+  public ResponseEntity<?> allProducts() {
+    ProductListResponse productListResponseJson = new ProductListResponse();
 
     List<Product> products = productService.allProducts();
 
@@ -133,10 +141,11 @@ public class ProductController {
           HttpStatus.NOT_FOUND);
     }
 
-    response.put("status", HttpStatus.OK);
-    response.put("products", products);
+    productListResponseJson.setStatus("OK");
+    productListResponseJson.setMessage("Products found");
+    productListResponseJson.setProducts(products);
 
-    return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    return new ResponseEntity<>(productListResponseJson, HttpStatus.OK);
   }
 
 }

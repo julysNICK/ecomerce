@@ -13,9 +13,9 @@ public interface ProductDAO {
 
   List<Product> allProducts();
 
-  String createProduct(Product product);
+  Product createProduct(Product product);
 
-  String updateProduct(Long id, Product product);
+  Product updateProduct(Long id, Product product);
 
-  String deleteProduct(Long id);
+  Product deleteProduct(Long id);
 }

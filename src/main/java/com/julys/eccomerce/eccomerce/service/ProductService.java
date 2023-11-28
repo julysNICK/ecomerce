@@ -8,12 +8,14 @@ import com.julys.eccomerce.eccomerce.entity.Product;
  * ProductService
  */
 public interface ProductService {
- Product findById(Long id);
- List<Product> allProducts();
- String createProduct(Product product);
-  
- String updateProduct(Long id, Product product);
+  Product findById(Long id);
 
-  String deleteProduct(Long id);
-  
+  List<Product> allProducts();
+
+  Product createProduct(Product product);
+
+  Product updateProduct(Long id, Product product);
+
+  Product deleteProduct(Long id);
+
 }

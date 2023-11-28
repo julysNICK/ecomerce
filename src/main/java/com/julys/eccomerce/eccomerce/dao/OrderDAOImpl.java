@@ -2,14 +2,20 @@ package com.julys.eccomerce.eccomerce.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.julys.eccomerce.eccomerce.bd.OrderSql;
 import com.julys.eccomerce.eccomerce.bd.UserSql;
 import com.julys.eccomerce.eccomerce.entity.Order;
 import com.julys.eccomerce.eccomerce.entity.User;
+import com.julys.eccomerce.eccomerce.error.ErrorOrder;
+import com.julys.eccomerce.eccomerce.response.ListOrderWithUsers;
 import com.julys.eccomerce.eccomerce.util.Util;
+import java.util.List;
 
 @Component
+@Transactional
 public class OrderDAOImpl implements OrderDAO {
   @Autowired
   private OrderSql orderSql;
@@ -18,51 +24,108 @@ public class OrderDAOImpl implements OrderDAO {
   private UserSql userSql;
 
   @Override
-  public Order findById(Long id) {
+  public ErrorOrder findById(Long id) {
+    ErrorOrder errorOrder = new ErrorOrder();
+    try {
+      Order order = orderSql.findById(id).orElse(null);
 
-    Order order = orderSql.findById(id).orElse(null);
+      if (order == null) {
+        errorOrder.setErrorMessage("Order not found");
+      }
 
-    return order;
+      errorOrder.setOrder(order);
+
+    } catch (Exception e) {
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      errorOrder.setErrorMessage("Error finding order " + e.getMessage());
+    }
+
+    return errorOrder;
   }
 
   @Override
-  public Order createOrder(Order order) {
+  public ErrorOrder createOrder(Order order) {
+    ErrorOrder errorOrder = new ErrorOrder();
 
-    User user = userSql.findById(order.getUserOrderId().getId()).orElse(null);
+    try {
+      User user = userSql.findById(order.getUserOrderId().getId()).orElse(null);
 
-    if (user == null) {
-      return null;
+      if (user == null) {
+        errorOrder.setErrorMessage("User not found");
+      }
+      errorOrder.setOrder(orderSql.save(order));
+    } catch (Exception e) {
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      if (e.getMessage().contains("getUserOrderId()")) {
+        errorOrder.setErrorMessage("Error creating order, user not found");
+      }
     }
 
-    return orderSql.save(order);
+    return errorOrder;
   }
 
   @Override
-  public Order updateOrder(Long id, Order order) {
-    Order orderToUpdate = orderSql.findById(id).orElse(null);
+  public ErrorOrder updateOrder(Long id, Order order) {
+    ErrorOrder errorOrder = new ErrorOrder();
+    try {
 
-    if (orderToUpdate == null) {
-      return null;
+      Order orderToUpdate = orderSql.findById(id).orElse(null);
+
+      if (orderToUpdate == null) {
+        errorOrder.setErrorMessage("Order not found");
+      }
+
+      Util.copyNonNullProperties(order, orderToUpdate);
+
+      orderSql.save(orderToUpdate);
+
+      errorOrder.setOrder(orderToUpdate);
+
+    } catch (Exception e) {
+
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      errorOrder.setErrorMessage("Error updating order " + e.getMessage());
+
+      if (e.getMessage().contains("Target must not be null")) {
+        errorOrder.setErrorMessage("Error updating order, order not found");
+      }
     }
 
-    Util.copyNonNullProperties(order, orderToUpdate);
-
-    orderSql.save(orderToUpdate);
-
-    return orderToUpdate;
+    return errorOrder;
   }
 
   @Override
   public String deleteOrder(Long id) {
-    var order = orderSql.findById(id).orElse(null);
+    System.out.println("id: " + id);
+    ErrorOrder errorOrder = new ErrorOrder();
+    try {
+      orderSql.deleteById(id);
+      return "Order deleted";
 
-    if (order == null) {
-      return null;
+    } catch (Exception e) {
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      errorOrder.setErrorMessage("Error deleting order " + e.getMessage());
+      return errorOrder.getErrorMessage();
     }
-
-    orderSql.delete(order);
-
-    return "Order deleted";
   }
 
+  @Override
+  public ListOrderWithUsers findOrderByUserId(Long id) {
+    ListOrderWithUsers errorOrder = new ListOrderWithUsers();
+    try {
+      List<Order> order = orderSql.findOrderByUserOrderId(id);
+
+      if (order == null) {
+        errorOrder.setErrorMessage("Order not found");
+      }
+
+      errorOrder.setOrder(order);
+
+    } catch (Exception e) {
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      errorOrder.setErrorMessage("Error finding order " + e.getMessage());
+    }
+
+    return errorOrder;
+  }
 }
