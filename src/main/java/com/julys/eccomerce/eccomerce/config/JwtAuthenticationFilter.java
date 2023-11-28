@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     final String userName;
 
     if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+      System.out.println("No se encontro el token11111111111111111111111111");
       filterChain.doFilter(request, response);
       return;
     }
@@ -49,9 +50,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     if (userName != null) {
 
-      UserDetails userDetails = this.userDetailsService.loadUserByUsername(userName);
+      System.out.println("No se encontro user 11111111111111111111!!!!!!");
 
+      UserDetails userDetails = this.userDetailsService.loadUserByUsername(userName);
+      System.out.println("userDetails: " + userDetails);
       if (jwtService.isTokenValid(jwt, userDetails)) {
+
+        System.out.println("wtService.isTokenValid(jwt, userDetails");
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null,
             userDetails.getAuthorities());
@@ -61,6 +66,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authToken);
       }
     }
+
+    System.out.println("No se encontro en el if 11111111111111111111111111");
 
     filterChain.doFilter(request, response);
 

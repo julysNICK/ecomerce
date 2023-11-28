@@ -15,7 +15,7 @@ import com.julys.eccomerce.eccomerce.util.Util;
 import java.util.List;
 
 @Component
-@Transactional
+
 public class OrderDAOImpl implements OrderDAO {
   @Autowired
   private OrderSql orderSql;
@@ -36,7 +36,6 @@ public class OrderDAOImpl implements OrderDAO {
       errorOrder.setOrder(order);
 
     } catch (Exception e) {
-      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
       errorOrder.setErrorMessage("Error finding order " + e.getMessage());
     }
 
@@ -55,7 +54,6 @@ public class OrderDAOImpl implements OrderDAO {
       }
       errorOrder.setOrder(orderSql.save(order));
     } catch (Exception e) {
-      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
       if (e.getMessage().contains("getUserOrderId()")) {
         errorOrder.setErrorMessage("Error creating order, user not found");
       }
@@ -83,7 +81,6 @@ public class OrderDAOImpl implements OrderDAO {
 
     } catch (Exception e) {
 
-      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
       errorOrder.setErrorMessage("Error updating order " + e.getMessage());
 
       if (e.getMessage().contains("Target must not be null")) {
@@ -103,7 +100,6 @@ public class OrderDAOImpl implements OrderDAO {
       return "Order deleted";
 
     } catch (Exception e) {
-      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
       errorOrder.setErrorMessage("Error deleting order " + e.getMessage());
       return errorOrder.getErrorMessage();
     }
@@ -122,7 +118,6 @@ public class OrderDAOImpl implements OrderDAO {
       errorOrder.setOrder(order);
 
     } catch (Exception e) {
-      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
       errorOrder.setErrorMessage("Error finding order " + e.getMessage());
     }
 
