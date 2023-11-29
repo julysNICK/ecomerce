@@ -2,16 +2,14 @@ package com.julys.eccomerce.eccomerce.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.julys.eccomerce.eccomerce.dao.OrderDAO;
 import com.julys.eccomerce.eccomerce.entity.Order;
-import com.julys.eccomerce.eccomerce.error.ErrorOrder;
 import com.julys.eccomerce.eccomerce.response.ListOrderWithUsers;
 
 @Component
+
 public class OrderServiceImpl implements OrderService {
 
   @Autowired
@@ -19,26 +17,28 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
 
-  public ErrorOrder createOrder(Order order) {
+  public Order createOrder(Order order) {
 
-    return orderDAO.createOrder(order);
+    Order orderSaved = orderDAO.createOrder(order);
+
+    return orderSaved;
 
   }
 
-  @Override
-  public String deleteOrder(Long id) {
-    return orderDAO.deleteOrder(id);
-  }
+  // @Override
+  // public String deleteOrder(Long id) {
+  // return orderDAO.deleteOrder(id);
+  // }
 
-  @Override
-  public ErrorOrder findById(Long id) {
-    return orderDAO.findById(id);
-  }
+  // @Override
+  // public ErrorOrder findById(Long id) {
+  // return orderDAO.findById(id);
+  // }
 
-  @Override
-  public ErrorOrder updateOrder(Long id, Order order) {
-    return orderDAO.updateOrder(id, order);
-  }
+  // @Override
+  // public ErrorOrder updateOrder(Long id, Order order) {
+  // return orderDAO.updateOrder(id, order);
+  // }
 
   @Override
   public ListOrderWithUsers findOrderByUserId(Long id) {

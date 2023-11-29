@@ -23,99 +23,91 @@ public class OrderDAOImpl implements OrderDAO {
   @Autowired
   private UserSql userSql;
 
-  @Override
-  public ErrorOrder findById(Long id) {
-    ErrorOrder errorOrder = new ErrorOrder();
-    try {
-      Order order = orderSql.findById(id).orElse(null);
+  // @Override
+  // public ErrorOrder findById(Long id) {
+  // ErrorOrder errorOrder = new ErrorOrder();
+  // try {
+  // Order order = orderSql.findById(id).orElse(null);
 
-      if (order == null) {
-        errorOrder.setErrorMessage("Order not found");
-      }
+  // if (order == null) {
+  // errorOrder.setErrorMessage("Order not found");
+  // }
 
-      errorOrder.setOrder(order);
+  // errorOrder.setOrder(order);
 
-    } catch (Exception e) {
-      errorOrder.setErrorMessage("Error finding order " + e.getMessage());
-    }
+  // } catch (Exception e) {
+  // errorOrder.setErrorMessage("Error finding order " + e.getMessage());
+  // }
 
-    return errorOrder;
-  }
-
-  @Override
-  public ErrorOrder createOrder(Order order) {
-    ErrorOrder errorOrder = new ErrorOrder();
-
-    try {
-      User user = userSql.findById(order.getUserOrderId().getId()).orElse(null);
-
-      if (user == null) {
-        errorOrder.setErrorMessage("User not found");
-      }
-      errorOrder.setOrder(orderSql.save(order));
-    } catch (Exception e) {
-      if (e.getMessage().contains("getUserOrderId()")) {
-        errorOrder.setErrorMessage("Error creating order, user not found");
-      }
-    }
-
-    return errorOrder;
-  }
+  // return errorOrder;
+  // }
 
   @Override
-  public ErrorOrder updateOrder(Long id, Order order) {
-    ErrorOrder errorOrder = new ErrorOrder();
-    try {
+  public Order createOrder(Order order) {
 
-      Order orderToUpdate = orderSql.findById(id).orElse(null);
+    return orderSql.save(order);
 
-      if (orderToUpdate == null) {
-        errorOrder.setErrorMessage("Order not found");
-      }
-
-      Util.copyNonNullProperties(order, orderToUpdate);
-
-      orderSql.save(orderToUpdate);
-
-      errorOrder.setOrder(orderToUpdate);
-
-    } catch (Exception e) {
-
-      errorOrder.setErrorMessage("Error updating order " + e.getMessage());
-
-      if (e.getMessage().contains("Target must not be null")) {
-        errorOrder.setErrorMessage("Error updating order, order not found");
-      }
-    }
-
-    return errorOrder;
   }
 
-  @Override
-  public String deleteOrder(Long id) {
-    System.out.println("id: " + id);
-    ErrorOrder errorOrder = new ErrorOrder();
-    try {
-      orderSql.deleteById(id);
-      return "Order deleted";
+  // @Override
+  // public ErrorOrder updateOrder(Long id, Order order) {
+  // ErrorOrder errorOrder = new ErrorOrder();
+  // try {
 
-    } catch (Exception e) {
-      errorOrder.setErrorMessage("Error deleting order " + e.getMessage());
-      return errorOrder.getErrorMessage();
-    }
-  }
+  // Order orderToUpdate = orderSql.findById(id).orElse(null);
+
+  // if (orderToUpdate == null) {
+  // errorOrder.setErrorMessage("Order not found");
+  // }
+
+  // Util.copyNonNullProperties(order, orderToUpdate);
+
+  // orderSql.save(orderToUpdate);
+
+  // errorOrder.setOrder(orderToUpdate);
+
+  // } catch (Exception e) {
+
+  // errorOrder.setErrorMessage("Error updating order " + e.getMessage());
+
+  // if (e.getMessage().contains("Target must not be null")) {
+  // errorOrder.setErrorMessage("Error updating order, order not found");
+  // }
+  // }
+
+  // return errorOrder;
+  // }
+
+  // @Override
+  // public String deleteOrder(Long id) {
+  // System.out.println("id: " + id);
+  // ErrorOrder errorOrder = new ErrorOrder();
+  // try {
+  // orderSql.deleteById(id);
+  // return "Order deleted";
+
+  // } catch (Exception e) {
+  // errorOrder.setErrorMessage("Error deleting order " + e.getMessage());
+  // return errorOrder.getErrorMessage();
+  // }
+  // }
 
   @Override
   public ListOrderWithUsers findOrderByUserId(Long id) {
     ListOrderWithUsers errorOrder = new ListOrderWithUsers();
     try {
-      List<Order> order = orderSql.findOrderByUserOrderId(id);
+
+      User user = userSql.findById(id).orElse(null);
+
+      List<Order> order = orderSql.findOrderByUserOrderId(user);
+
+      System.out.println("order: " + order);
 
       if (order == null) {
         errorOrder.setErrorMessage("Order not found");
       }
 
-      errorOrder.setOrder(order);
+      errorOrder.formatJson(order);
 
     } catch (Exception e) {
       errorOrder.setErrorMessage("Error finding order " + e.getMessage());

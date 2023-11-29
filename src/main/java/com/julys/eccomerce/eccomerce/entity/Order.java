@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "orders")
 @DynamicUpdate
+
 public class Order {
 
   @Id
@@ -37,8 +38,8 @@ public class Order {
     return dateOrder;
   }
 
-  @ManyToOne
-  @JoinColumn(name = "user_id_order", nullable = false)
+  @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
+  @JoinColumn(name = "user_id_order", nullable = false, referencedColumnName = "id")
   private User userOrderId;
 
   public User getUserOrderId() {

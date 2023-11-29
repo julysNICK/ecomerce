@@ -11,7 +11,7 @@ import java.util.List;
 public interface OrderSql extends JpaRepository<Order, Long> {
 
   // do a join searching for the user by id along with the order
-  @Query("SELECT o FROM Order o WHERE o.userOrderId.id = ?1")
-  List<Order> findOrderByUserOrderId(Long id);
+  @Query("SELECT o FROM Order o WHERE o.userOrderId = ?1")
+  List<Order> findOrderByUserOrderId(User id);
 
 }
