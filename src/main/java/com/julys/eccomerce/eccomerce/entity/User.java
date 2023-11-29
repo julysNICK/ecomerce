@@ -2,6 +2,7 @@ package com.julys.eccomerce.eccomerce.entity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.catalina.Role;
 import org.hibernate.annotations.DynamicUpdate;
@@ -19,10 +20,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.transaction.Transactional;
+import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Table(name = "users")
 @DynamicUpdate
+@Transactional
+@Data
 public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -104,14 +110,15 @@ public class User implements UserDetails {
   /**
    *
    */
-  @OneToMany(mappedBy = "userOrderId")
-  private List<Order> orders;
+  @OneToMany(mappedBy = "userOrder", fetch = jakarta.persistence.FetchType.EAGER)
+  @ToString.Exclude
+  private Set<Order> orders;
 
-  public List<Order> getOrders() {
+  public Set<Order> getOrders() {
     return orders;
   }
 
-  public void setOrders(List<Order> orders) {
+  public void setOrders(Set<Order> orders) {
     this.orders = orders;
   }
 

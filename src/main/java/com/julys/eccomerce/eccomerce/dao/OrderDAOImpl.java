@@ -93,13 +93,11 @@ public class OrderDAOImpl implements OrderDAO {
   // }
 
   @Override
-  public ListOrderWithUsers findOrderByUserId(Long id) {
+  public ListOrderWithUsers findOrderByUserIdOrder(Long id) {
     ListOrderWithUsers errorOrder = new ListOrderWithUsers();
     try {
 
-      User user = userSql.findById(id).orElse(null);
-
-      List<Order> order = orderSql.findOrderByUserOrderId(user);
+      List<Order> order = orderSql.findByUserOrder_Id(id);
 
       System.out.println("order: " + order);
 

@@ -1,5 +1,7 @@
 package com.julys.eccomerce.eccomerce.response;
 
+import com.julys.eccomerce.eccomerce.entity.User;
+
 public class OrderPure {
 
   private Long id;
@@ -32,14 +34,20 @@ public class OrderPure {
     this.statusOrder = statusOrder;
   }
 
-  private Long userOrderId;
+  private UserResponseOrder userOrderName;
 
-  public Long getUserOrderId() {
-    return userOrderId;
+  public UserResponseOrder getUserOrderName() {
+    return userOrderName;
   }
 
-  public void setUserOrderId(Long userOrderId) {
-    this.userOrderId = userOrderId;
+  public void setUserOrderName(User userOrderName) {
+    UserResponseOrder userOrderNameNew = new UserResponseOrder();
+
+    userOrderNameNew.setName(userOrderName.getUsername());
+
+    userOrderNameNew.setEmail(userOrderName.getEmail());
+
+    this.userOrderName = userOrderNameNew;
   }
 
 }

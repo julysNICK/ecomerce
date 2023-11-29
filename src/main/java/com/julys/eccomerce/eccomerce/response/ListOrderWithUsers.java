@@ -32,7 +32,8 @@ public class ListOrderWithUsers {
       orderPure.setId(order2.getId());
       orderPure.setDateOrder(order2.getDateOrder().toString());
       orderPure.setStatusOrder(order2.getStatusOrder());
-      orderPure.setUserOrderId(order2.getUserOrderId().getId());
+      orderPure.setUserOrderName(order2.getUserOrder());
+
       this.orderArray.add(orderPure);
     }
 

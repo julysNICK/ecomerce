@@ -42,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public ListOrderWithUsers findOrderByUserId(Long id) {
-    return orderDAO.findOrderByUserId(id);
+    return orderDAO.findOrderByUserIdOrder(id);
   }
 
 }

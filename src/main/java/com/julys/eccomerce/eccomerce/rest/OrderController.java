@@ -68,14 +68,12 @@ public class OrderController {
 
     orderToCreate.setStatusOrder(order.getStatusOrder());
 
-    orderToCreate.setUserOrderId(user);
-
     orderToCreate.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
 
     orderToCreate.setPriceTotal(order.getPriceTotal());
 
     Order orderSaved = orderService.createOrder(orderToCreate);
-    return ResponseEntity.ok(orderSaved.getUserOrderId());
+    return ResponseEntity.ok(orderSaved);
 
   }
 

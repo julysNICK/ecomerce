@@ -14,6 +14,6 @@ public interface OrderDAO {
 
   // String deleteOrder(Long id);
 
-  ListOrderWithUsers findOrderByUserId(Long id);
+  ListOrderWithUsers findOrderByUserIdOrder(Long id);
 
 }
