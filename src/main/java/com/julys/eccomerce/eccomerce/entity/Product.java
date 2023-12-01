@@ -9,9 +9,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.transaction.Transactional;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Table(name = "products")
@@ -71,7 +73,7 @@ public class Product {
     this.stock = stock;
   }
 
-  public Product() {
-  }
-
+  @OneToMany(mappedBy = "product")
+  @ToString.Exclude
+  private java.util.Set<ProductOrder> productOrders;
 }

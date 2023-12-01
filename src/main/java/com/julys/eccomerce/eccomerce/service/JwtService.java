@@ -121,7 +121,7 @@ public class JwtService {
 
       return secretKey;
     } catch (IllegalArgumentException e) {
-      System.out.println("JWT token compact of handler are invalid.");
+
       e.printStackTrace();
       return null;
     }

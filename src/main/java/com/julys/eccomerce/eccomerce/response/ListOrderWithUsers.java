@@ -27,7 +27,7 @@ public class ListOrderWithUsers {
 
   public List<OrderPure> formatJson(List<Order> order) {
     for (Order order2 : order) {
-      System.out.println("order2.getId() " + order2.getId());
+
       OrderPure orderPure = new OrderPure();
       orderPure.setId(order2.getId());
       orderPure.setDateOrder(order2.getDateOrder().toString());

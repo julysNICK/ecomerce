@@ -5,13 +5,13 @@ import com.julys.eccomerce.eccomerce.error.ErrorOrder;
 import com.julys.eccomerce.eccomerce.response.ListOrderWithUsers;
 
 public interface OrderService {
-  // ErrorOrder findById(Long id);
+  ErrorOrder findById(Long id);
 
   Order createOrder(Order order);
 
-  // ErrorOrder updateOrder(Long id, Order order);
+  ErrorOrder updateOrder(Long id, Order order);
 
-  // String deleteOrder(Long id);
+  String deleteOrder(Long id);
 
   ListOrderWithUsers findOrderByUserId(Long id);
 }

@@ -112,6 +112,7 @@ public class User implements UserDetails {
    */
   @OneToMany(mappedBy = "userOrder", fetch = jakarta.persistence.FetchType.EAGER)
   @ToString.Exclude
+
   private Set<Order> orders;
 
   public Set<Order> getOrders() {
@@ -149,32 +150,31 @@ public class User implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    System.out.println("getAuthorities");
-    System.out.println(role.name());
+
     return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
   }
 
   @Override
   public boolean isAccountNonExpired() {
-    System.out.println("isAccountNonExpired");
+
     return true;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    System.out.println("isAccountNonLocked");
+
     return true;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    System.out.println("isCredentialsNonExpired");
+
     return true;
   }
 
   @Override
   public boolean isEnabled() {
-    System.out.println("isEnabled");
+
     return true;
   }
 

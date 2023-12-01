@@ -3,8 +3,6 @@ package com.julys.eccomerce.eccomerce.entity;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,18 +11,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.transaction.Transactional;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Entity
 @Transactional
 @Data
-
 @Table(name = "orders")
 @DynamicUpdate
-
 public class Order {
 
   @Id
@@ -49,11 +47,17 @@ public class Order {
   @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
   @JoinColumn(name = "user_id_order", referencedColumnName = "id")
   @ToString.Exclude
+
   private User userOrder;
 
   public User getUserOrder() {
     return userOrder;
   }
+
+  @OneToMany(mappedBy = "order")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private java.util.Set<ProductOrder> productOrders;
 
   public void setUserOrder(User userOrder) {
     this.userOrder = userOrder;

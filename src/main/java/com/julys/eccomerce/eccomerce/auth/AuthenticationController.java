@@ -58,8 +58,6 @@ public class AuthenticationController {
 
       if (cause instanceof org.hibernate.exception.ConstraintViolationException) {
 
-        System.out.println("linha 83 cause.getMessage(): " + cause.getMessage());
-
         if (cause.getMessage().contains("users_email_key")) {
           userErrorResponse.setMessage("Email já cadastrado");
           return ResponseEntity.badRequest().body(userErrorResponse.createJson());
@@ -85,7 +83,7 @@ public class AuthenticationController {
   @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody AutheticationRequest user) {
     UserResponse userResponse = new UserResponse();
-    System.out.println("login");
+
     try {
 
       authenticationManager.authenticate(

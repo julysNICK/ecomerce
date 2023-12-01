@@ -6,13 +6,13 @@ import com.julys.eccomerce.eccomerce.response.ListOrderWithUsers;
 
 public interface OrderDAO {
 
-  // ErrorOrder findById(Long id);
+  ErrorOrder findById(Long id);
 
   Order createOrder(Order order);
 
-  // ErrorOrder updateOrder(Long id, Order order);
+  ErrorOrder updateOrder(Long id, Order order);
 
-  // String deleteOrder(Long id);
+  String deleteOrder(Long id);
 
   ListOrderWithUsers findOrderByUserIdOrder(Long id);
 

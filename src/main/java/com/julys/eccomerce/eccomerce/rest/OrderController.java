@@ -41,15 +41,15 @@ public class OrderController {
     return "Hello World Order";
   }
 
-  // @GetMapping("/{id}")
-  // public ResponseEntity<?> findById(@PathVariable Long id) {
-  // try {
-  // return ResponseEntity.ok(orderService.findById(id));
-  // } catch (Exception e) {
+  @GetMapping("/{id}")
+  public ResponseEntity<?> findById(@PathVariable Long id) {
+    try {
+      return ResponseEntity.ok(orderService.findById(id));
+    } catch (Exception e) {
 
-  // return ResponseEntity.badRequest().body(e.getMessage());
-  // }
-  // }
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+  }
 
   @PostMapping("/create")
   public ResponseEntity<?> createOrder(@RequestBody RequestCreateOrder order) {
@@ -71,31 +71,32 @@ public class OrderController {
     orderToCreate.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
 
     orderToCreate.setPriceTotal(order.getPriceTotal());
+    orderToCreate.setUserOrder(user);
 
     Order orderSaved = orderService.createOrder(orderToCreate);
     return ResponseEntity.ok(orderSaved);
 
   }
 
-  // @PatchMapping("/{id}")
-  // public ResponseEntity<?> updateOrder(@RequestBody Order order) {
-  // try {
-  // return ResponseEntity.ok(orderService.updateOrder(order.getId(), order));
-  // } catch (Exception e) {
+  @PatchMapping("/{id}")
+  public ResponseEntity<?> updateOrder(@RequestBody Order order) {
+    try {
+      return ResponseEntity.ok(orderService.updateOrder(order.getId(), order));
+    } catch (Exception e) {
 
-  // return ResponseEntity.badRequest().body(e.getMessage());
-  // }
-  // }
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+  }
 
-  // @DeleteMapping("/{id}")
-  // public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
-  // try {
-  // return ResponseEntity.ok(orderService.deleteOrder(id));
-  // } catch (Exception e) {
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
+    try {
+      return ResponseEntity.ok(orderService.deleteOrder(id));
+    } catch (Exception e) {
 
-  // return ResponseEntity.badRequest().body(e.getMessage());
-  // }
-  // }
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+  }
 
   @GetMapping("/user/{id}")
   public ResponseEntity<?> findOrderByUserId(@PathVariable Long id) {

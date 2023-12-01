@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.julys.eccomerce.eccomerce.dao.OrderDAO;
 import com.julys.eccomerce.eccomerce.entity.Order;
+import com.julys.eccomerce.eccomerce.error.ErrorOrder;
 import com.julys.eccomerce.eccomerce.response.ListOrderWithUsers;
 
 @Component
@@ -25,20 +26,20 @@ public class OrderServiceImpl implements OrderService {
 
   }
 
-  // @Override
-  // public String deleteOrder(Long id) {
-  // return orderDAO.deleteOrder(id);
-  // }
+  @Override
+  public String deleteOrder(Long id) {
+    return orderDAO.deleteOrder(id);
+  }
 
-  // @Override
-  // public ErrorOrder findById(Long id) {
-  // return orderDAO.findById(id);
-  // }
+  @Override
+  public ErrorOrder findById(Long id) {
+    return orderDAO.findById(id);
+  }
 
-  // @Override
-  // public ErrorOrder updateOrder(Long id, Order order) {
-  // return orderDAO.updateOrder(id, order);
-  // }
+  @Override
+  public ErrorOrder updateOrder(Long id, Order order) {
+    return orderDAO.updateOrder(id, order);
+  }
 
   @Override
   public ListOrderWithUsers findOrderByUserId(Long id) {
