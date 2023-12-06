@@ -83,9 +83,10 @@ public class ProductController {
       return new ErrorBuilder().buildResponseEntity(errors, HttpStatus.BAD_REQUEST);
     }
 
+    Product response = productService.createProduct(product);
     productResponseJson.setStatus("OK");
     productResponseJson.setMessage("Product created");
-    productResponseJson.setProduct(product);
+    productResponseJson.setProduct(response);
 
     return new ResponseEntity<>(productResponseJson.createJson(), headers, HttpStatus.CREATED);
   }

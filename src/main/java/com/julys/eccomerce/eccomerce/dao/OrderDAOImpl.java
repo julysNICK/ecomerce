@@ -1,6 +1,9 @@
 package com.julys.eccomerce.eccomerce.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Component;
 import com.julys.eccomerce.eccomerce.bd.OrderSql;
 import com.julys.eccomerce.eccomerce.entity.Order;
@@ -38,7 +41,32 @@ public class OrderDAOImpl implements OrderDAO {
   @Override
   public Order createOrder(Order order) {
 
-    return orderSql.save(order);
+    try {
+      return orderSql.save(order);
+    } catch (InvalidDataAccessApiUsageException e) {
+
+      throw new InvalidDataAccessApiUsageException("Error creating order: " + e.getMessage());
+
+    } catch (NullPointerException e) {
+
+      throw new NullPointerException("Error creating order: " + e.getMessage());
+
+    } catch (DataIntegrityViolationException e) {
+
+      if (e.getMessage().contains("priceTotal")) {
+        throw new DataIntegrityViolationException("Error creating order, priceTotal is required");
+      } else if (e.getMessage().contains("statusOrder")) {
+        throw new DataIntegrityViolationException("Error creating order, userOrder is required");
+      }
+      throw new DataIntegrityViolationException("Error creating order: " + e.getMessage());
+
+    } catch (DataAccessResourceFailureException e) {
+
+      throw new DataAccessResourceFailureException("Error creating order: " + e.getMessage());
+    } catch (Exception e) {
+
+      throw new RuntimeException("Error creating order: " + e.getMessage());
+    }
 
   }
 
@@ -80,6 +108,7 @@ public class OrderDAOImpl implements OrderDAO {
       return "Order deleted";
 
     } catch (Exception e) {
+
       errorOrder.setErrorMessage("Error deleting order " + e.getMessage());
       return errorOrder.getErrorMessage();
     }

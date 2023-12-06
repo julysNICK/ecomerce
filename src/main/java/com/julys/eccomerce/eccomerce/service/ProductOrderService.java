@@ -16,4 +16,6 @@ public interface ProductOrderService {
   public List<ProductOrder> findByOrder(Long idOrder);
 
   public List<ProductOrder> findByProduct(Long idProduct);
+
+  public ProductOrder updateProductOrder(ProductOrder productOrder);
 }

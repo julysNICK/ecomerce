@@ -27,12 +27,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
   @Override
   public ProductOrder findById(Long idOrder) {
-    try {
-      return productOrderDAO.findById(idOrder);
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      return null;
-    }
+
+    return productOrderDAO.findById(idOrder);
+
   }
 
   @Override
@@ -70,6 +67,16 @@ public class ProductOrderServiceImpl implements ProductOrderService {
   public List<ProductOrder> findByProduct(Long idProduct) {
     try {
       return productOrderDAO.findByProduct(idProduct);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return null;
+    }
+  }
+
+  @Override
+  public ProductOrder updateProductOrder(ProductOrder productOrder) {
+    try {
+      return productOrderDAO.updateProductOrder(productOrder);
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return null;

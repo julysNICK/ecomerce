@@ -2,8 +2,10 @@ package com.julys.eccomerce.eccomerce.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,12 +27,12 @@ public class ProductOrder {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+  @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER, cascade = { CascadeType.ALL })
   @JoinColumn(name = "order_id", referencedColumnName = "id")
-  @JsonIgnore
+  @JsonBackReference
   private Order order;
 
-  @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+  @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER, cascade = { CascadeType.ALL })
   @JoinColumn(name = "product_id", referencedColumnName = "id")
   private Product product;
 

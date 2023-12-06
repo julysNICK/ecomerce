@@ -16,4 +16,6 @@ public interface ProductOrderDAO {
   List<ProductOrder> findByOrder(Long idOrder);
 
   List<ProductOrder> findByProduct(Long idProduct);
+
+  ProductOrder updateProductOrder(ProductOrder productOrder);
 }

@@ -1,6 +1,7 @@
 package com.julys.eccomerce.eccomerce.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,28 +54,41 @@ public class OrderController {
 
   @PostMapping("/create")
   public ResponseEntity<?> createOrder(@RequestBody RequestCreateOrder order) {
+    try {
 
-    String format = "yyyy-MM-dd HH:mm:ss";
+      String format = "yyyy-MM-dd HH:mm:ss";
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 
-    LocalDateTime dateOrder = LocalDateTime.parse(order.getDateOrder(), formatter);
+      LocalDateTime dateOrder = LocalDateTime.parse(order.getDateOrder(), formatter);
 
-    Order orderToCreate = new Order();
+      Order orderToCreate = new Order();
 
-    User user = userService.findById(order.getUserOrderId());
+      User user = userService.findById(order.getUserOrderId());
 
-    orderToCreate.setDateOrder(dateOrder);
+      orderToCreate.setDateOrder(dateOrder);
 
-    orderToCreate.setStatusOrder(order.getStatusOrder());
+      orderToCreate.setStatusOrder(order.getStatusOrder());
 
-    orderToCreate.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
+      orderToCreate.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
 
-    orderToCreate.setPriceTotal(order.getPriceTotal());
-    orderToCreate.setUserOrder(user);
+      orderToCreate.setPriceTotal(order.getPriceTotal());
+      orderToCreate.setUserOrder(user);
 
-    Order orderSaved = orderService.createOrder(orderToCreate);
-    return ResponseEntity.ok(orderSaved);
+      Order orderSaved = orderService.createOrder(orderToCreate);
+      return ResponseEntity.ok(orderSaved);
+    } catch (InvalidDataAccessApiUsageException e) {
+
+      return ResponseEntity.badRequest().body("Error creating order user id not found");
+
+    } catch (NullPointerException e) {
+
+      return ResponseEntity.badRequest().body("Error creating order dateOrder is required");
+
+    } catch (Exception e) {
+
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
 
   }
 

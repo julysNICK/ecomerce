@@ -3,6 +3,8 @@ package com.julys.eccomerce.eccomerce.entity;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,8 +57,7 @@ public class Order {
   }
 
   @OneToMany(mappedBy = "order")
-  @ToString.Exclude
-  @EqualsAndHashCode.Exclude
+  @JsonManagedReference
   private java.util.Set<ProductOrder> productOrders;
 
   public void setUserOrder(User userOrder) {
