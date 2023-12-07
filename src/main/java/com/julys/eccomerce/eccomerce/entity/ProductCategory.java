@@ -1,5 +1,7 @@
 package com.julys.eccomerce.eccomerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -19,10 +21,13 @@ public class ProductCategory {
 
   @ManyToOne
   @JoinColumn(name = "product_id", insertable = false, updatable = false)
-  private Product product;
+  @JsonBackReference
+  private Product productCategory;
 
   @ManyToOne
+
   @JoinColumn(name = "category_id", insertable = false, updatable = false)
+  @JsonBackReference
   private Category category;
 
 }

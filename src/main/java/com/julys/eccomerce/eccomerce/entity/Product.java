@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -78,4 +80,9 @@ public class Product {
 
   @ToString.Exclude
   private java.util.Set<ProductOrder> productOrders;
+
+  @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, orphanRemoval = true)
+  @ToString.Exclude
+  @JsonManagedReference
+  private java.util.Set<ProductCategory> productCategories;
 }
