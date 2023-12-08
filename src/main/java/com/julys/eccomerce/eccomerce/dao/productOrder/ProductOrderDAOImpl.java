@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.dao;
+package com.julys.eccomerce.eccomerce.dao.productOrder;
 
 import java.util.List;
 

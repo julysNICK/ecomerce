@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.dao;
+package com.julys.eccomerce.eccomerce.dao.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;

@@ -20,8 +20,8 @@ import com.julys.eccomerce.eccomerce.entity.Order;
 import com.julys.eccomerce.eccomerce.entity.Product;
 import com.julys.eccomerce.eccomerce.entity.ProductOrder;
 import com.julys.eccomerce.eccomerce.request.product.RequestProductOrder;
-import com.julys.eccomerce.eccomerce.service.ProductOrderService;
-import com.julys.eccomerce.eccomerce.service.ProductService;
+import com.julys.eccomerce.eccomerce.service.product.ProductService;
+import com.julys.eccomerce.eccomerce.service.productOrder.ProductOrderService;
 
 import io.micrometer.core.ipc.http.HttpSender.Response;
 

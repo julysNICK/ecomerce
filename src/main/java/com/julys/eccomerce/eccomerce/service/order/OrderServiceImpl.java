@@ -1,10 +1,10 @@
-package com.julys.eccomerce.eccomerce.service;
+package com.julys.eccomerce.eccomerce.service.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.julys.eccomerce.eccomerce.dao.OrderDAO;
+import com.julys.eccomerce.eccomerce.dao.order.OrderDAO;
 import com.julys.eccomerce.eccomerce.entity.Order;
 import com.julys.eccomerce.eccomerce.error.ErrorOrder;
 import com.julys.eccomerce.eccomerce.response.order.ListOrderWithUsers;

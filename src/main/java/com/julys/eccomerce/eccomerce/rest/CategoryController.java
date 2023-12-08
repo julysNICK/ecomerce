@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.julys.eccomerce.eccomerce.entity.Category;
-import com.julys.eccomerce.eccomerce.service.CategoryService;
+import com.julys.eccomerce.eccomerce.service.category.CategoryService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

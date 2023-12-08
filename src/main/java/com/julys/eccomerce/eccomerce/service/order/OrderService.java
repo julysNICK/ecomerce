@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.service;
+package com.julys.eccomerce.eccomerce.service.order;
 
 import com.julys.eccomerce.eccomerce.entity.Order;
 import com.julys.eccomerce.eccomerce.error.ErrorOrder;

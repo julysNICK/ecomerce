@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.dao;
+package com.julys.eccomerce.eccomerce.dao.productCategory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

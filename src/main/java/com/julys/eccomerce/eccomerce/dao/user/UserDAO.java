@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.dao;
+package com.julys.eccomerce.eccomerce.dao.user;
 
 import com.julys.eccomerce.eccomerce.entity.User;
 

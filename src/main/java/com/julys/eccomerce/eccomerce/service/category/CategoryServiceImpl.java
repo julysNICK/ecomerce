@@ -1,9 +1,9 @@
-package com.julys.eccomerce.eccomerce.service;
+package com.julys.eccomerce.eccomerce.service.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.julys.eccomerce.eccomerce.dao.CategoryDAO;
+import com.julys.eccomerce.eccomerce.dao.category.CategoryDAO;
 import com.julys.eccomerce.eccomerce.entity.Category;
 
 @Component

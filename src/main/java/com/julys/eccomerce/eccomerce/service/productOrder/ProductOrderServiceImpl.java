@@ -1,11 +1,11 @@
-package com.julys.eccomerce.eccomerce.service;
+package com.julys.eccomerce.eccomerce.service.productOrder;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.julys.eccomerce.eccomerce.dao.ProductOrderDAO;
+import com.julys.eccomerce.eccomerce.dao.productOrder.ProductOrderDAO;
 import com.julys.eccomerce.eccomerce.entity.ProductOrder;
 
 @Component

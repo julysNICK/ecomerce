@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.dao;
+package com.julys.eccomerce.eccomerce.dao.productCategory;
 
 import com.julys.eccomerce.eccomerce.entity.ProductCategory;
 

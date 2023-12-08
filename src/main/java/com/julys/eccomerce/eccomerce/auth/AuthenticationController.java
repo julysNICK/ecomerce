@@ -17,7 +17,7 @@ import com.julys.eccomerce.eccomerce.entity.User;
 import com.julys.eccomerce.eccomerce.response.user.UserErrorResponse;
 import com.julys.eccomerce.eccomerce.response.user.UserResponse;
 import com.julys.eccomerce.eccomerce.service.JwtService;
-import com.julys.eccomerce.eccomerce.service.UserService;
+import com.julys.eccomerce.eccomerce.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 

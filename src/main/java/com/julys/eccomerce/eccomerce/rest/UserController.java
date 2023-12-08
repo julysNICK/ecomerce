@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.julys.eccomerce.eccomerce.service.UserService;
+import com.julys.eccomerce.eccomerce.service.user.UserService;
 
 @RestController
 @RequestMapping("/api/user")

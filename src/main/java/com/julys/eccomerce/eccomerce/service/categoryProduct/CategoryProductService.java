@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.service;
+package com.julys.eccomerce.eccomerce.service.categoryProduct;
 
 import com.julys.eccomerce.eccomerce.entity.ProductCategory;
 

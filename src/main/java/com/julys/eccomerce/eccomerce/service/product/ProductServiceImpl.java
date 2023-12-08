@@ -1,10 +1,10 @@
-package com.julys.eccomerce.eccomerce.service;
+package com.julys.eccomerce.eccomerce.service.product;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.julys.eccomerce.eccomerce.dao.ProductDAO;
+import com.julys.eccomerce.eccomerce.dao.product.ProductDAO;
 import com.julys.eccomerce.eccomerce.entity.Product;
 
 /**
