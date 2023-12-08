@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.response;
+package com.julys.eccomerce.eccomerce.response.order;
 
 import java.util.Map;
 

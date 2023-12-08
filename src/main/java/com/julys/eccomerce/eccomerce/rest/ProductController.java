@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.julys.eccomerce.eccomerce.entity.Product;
 import com.julys.eccomerce.eccomerce.error.ErrorBuilder;
 import com.julys.eccomerce.eccomerce.error.ErrorFormat;
-import com.julys.eccomerce.eccomerce.response.ProductListResponse;
-import com.julys.eccomerce.eccomerce.response.ProductResponse;
+import com.julys.eccomerce.eccomerce.response.product.ProductListResponse;
+import com.julys.eccomerce.eccomerce.response.product.ProductResponse;
 import com.julys.eccomerce.eccomerce.service.ProductService;
 
 import com.julys.eccomerce.eccomerce.validator.ProductValidator;

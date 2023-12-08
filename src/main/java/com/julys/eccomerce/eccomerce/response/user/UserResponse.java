@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.response;
+package com.julys.eccomerce.eccomerce.response.user;
 
 import java.util.HashMap;
 import java.util.Map;

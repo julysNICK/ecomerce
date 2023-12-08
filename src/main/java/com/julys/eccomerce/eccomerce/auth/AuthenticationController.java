@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.julys.eccomerce.eccomerce.entity.User;
-import com.julys.eccomerce.eccomerce.response.UserErrorResponse;
-
-import com.julys.eccomerce.eccomerce.response.UserResponse;
+import com.julys.eccomerce.eccomerce.response.user.UserErrorResponse;
+import com.julys.eccomerce.eccomerce.response.user.UserResponse;
 import com.julys.eccomerce.eccomerce.service.JwtService;
 import com.julys.eccomerce.eccomerce.service.UserService;
 

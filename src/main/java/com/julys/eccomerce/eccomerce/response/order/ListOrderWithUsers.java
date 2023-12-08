@@ -1,6 +1,7 @@
-package com.julys.eccomerce.eccomerce.response;
+package com.julys.eccomerce.eccomerce.response.order;
 
 import com.julys.eccomerce.eccomerce.entity.Order;
+
 import java.util.List;
 import java.util.ArrayList;
 

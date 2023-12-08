@@ -2,7 +2,7 @@ package com.julys.eccomerce.eccomerce.service;
 
 import com.julys.eccomerce.eccomerce.entity.Order;
 import com.julys.eccomerce.eccomerce.error.ErrorOrder;
-import com.julys.eccomerce.eccomerce.response.ListOrderWithUsers;
+import com.julys.eccomerce.eccomerce.response.order.ListOrderWithUsers;
 
 public interface OrderService {
   Order findById(Long id);

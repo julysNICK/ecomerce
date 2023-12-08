@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.response;
+package com.julys.eccomerce.eccomerce.response.product;
 
 import java.util.Map;
 
