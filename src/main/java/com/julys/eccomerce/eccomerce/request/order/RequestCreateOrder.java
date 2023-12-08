@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.request;
+package com.julys.eccomerce.eccomerce.request.order;
 
 import java.time.LocalDateTime;
 

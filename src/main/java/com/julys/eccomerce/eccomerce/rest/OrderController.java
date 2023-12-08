@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.julys.eccomerce.eccomerce.entity.Order;
 import com.julys.eccomerce.eccomerce.entity.User;
-import com.julys.eccomerce.eccomerce.request.RequestCreateOrder;
+import com.julys.eccomerce.eccomerce.request.order.RequestCreateOrder;
 import com.julys.eccomerce.eccomerce.response.order.OrderResponse;
 import com.julys.eccomerce.eccomerce.service.OrderService;
 import com.julys.eccomerce.eccomerce.service.UserService;

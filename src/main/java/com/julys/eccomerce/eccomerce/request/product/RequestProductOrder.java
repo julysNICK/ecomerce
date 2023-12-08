@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.request;
+package com.julys.eccomerce.eccomerce.request.product;
 
 @lombok.Data
 public class RequestProductOrder {

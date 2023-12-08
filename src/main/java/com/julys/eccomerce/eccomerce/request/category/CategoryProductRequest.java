@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce.request;
+package com.julys.eccomerce.eccomerce.request.category;
 
 import lombok.Getter;
 import lombok.Setter;

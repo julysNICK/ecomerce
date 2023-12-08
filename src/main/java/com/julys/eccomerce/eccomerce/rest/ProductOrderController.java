@@ -19,7 +19,7 @@ import com.julys.eccomerce.eccomerce.bd.OrderSql;
 import com.julys.eccomerce.eccomerce.entity.Order;
 import com.julys.eccomerce.eccomerce.entity.Product;
 import com.julys.eccomerce.eccomerce.entity.ProductOrder;
-import com.julys.eccomerce.eccomerce.request.RequestProductOrder;
+import com.julys.eccomerce.eccomerce.request.product.RequestProductOrder;
 import com.julys.eccomerce.eccomerce.service.ProductOrderService;
 import com.julys.eccomerce.eccomerce.service.ProductService;
 
