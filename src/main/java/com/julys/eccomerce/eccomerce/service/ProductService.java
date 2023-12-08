@@ -18,4 +18,6 @@ public interface ProductService {
 
   Product deleteProduct(Long id);
 
+  Iterable<Product> getByCategoryName(String name);
+
 }

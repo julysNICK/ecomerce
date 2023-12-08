@@ -17,13 +17,12 @@ public class ProductOrderDAOImpl implements ProductOrderDAO {
   private ProductOrderSql productOrderSql;
 
   @Override
-  public String createProductOrder(ProductOrder productOrder) {
+  public ProductOrder createProductOrder(ProductOrder productOrder) {
     try {
-      productOrderSql.save(productOrder);
-      return "Product order created successfully";
+
+      return productOrderSql.save(productOrder);
     } catch (DataIntegrityViolationException e) {
-      System.out.println("e.getMessage() 25");
-      System.out.println(e.getMessage());
+
       throw new DataIntegrityViolationException("Error creating product order: " + e.getMessage());
 
     } catch (NullPointerException e) {
@@ -32,10 +31,7 @@ public class ProductOrderDAOImpl implements ProductOrderDAO {
 
     } catch (Exception e) {
 
-      System.out.println(e.getMessage());
-      System.out.println(e.getCause());
-      System.out.println(e.getStackTrace());
-      return "Error creating product order: " + e.getMessage();
+      throw new RuntimeException("Error creating product order: " + e.getMessage());
     }
   }
 
@@ -49,7 +45,7 @@ public class ProductOrderDAOImpl implements ProductOrderDAO {
       throw new EmptyResultDataAccessException("Error finding product order: " + e.getMessage(), 1);
 
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       throw new RuntimeException("Error finding product order: " + e.getMessage());
     }
   }
@@ -64,7 +60,7 @@ public class ProductOrderDAOImpl implements ProductOrderDAO {
       throw new EmptyResultDataAccessException("Error finding product order: " + e.getMessage(), 1);
 
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       throw new RuntimeException("Error finding product order: " + e.getMessage());
     }
   }
@@ -75,7 +71,7 @@ public class ProductOrderDAOImpl implements ProductOrderDAO {
       productOrderSql.deleteById(idOrder);
       return "Product order deleted successfully";
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       throw new RuntimeException("Error deleting product order: " + e.getMessage());
     }
   }
@@ -89,7 +85,7 @@ public class ProductOrderDAOImpl implements ProductOrderDAO {
     } catch (EmptyResultDataAccessException e) {
       throw new EmptyResultDataAccessException("Error finding product order: " + e.getMessage(), 1);
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       throw new RuntimeException("Error finding product order: " + e.getMessage());
     }
   }
@@ -102,7 +98,7 @@ public class ProductOrderDAOImpl implements ProductOrderDAO {
       throw new DataIntegrityViolationException("Error finding product order: " + e.getMessage());
 
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       throw new RuntimeException("Error finding product order: " + e.getMessage());
 
     }
@@ -126,7 +122,7 @@ public class ProductOrderDAOImpl implements ProductOrderDAO {
       throw new DataIntegrityViolationException("Error updating product order: " + e.getMessage());
 
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       throw new RuntimeException("Error updating product order: " + e.getMessage());
     }
   }

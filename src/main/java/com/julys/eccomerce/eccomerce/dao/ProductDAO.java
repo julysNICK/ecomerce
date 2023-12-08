@@ -18,4 +18,6 @@ public interface ProductDAO {
   Product updateProduct(Long id, Product product);
 
   Product deleteProduct(Long id);
+
+  Iterable<Product> findByCategory(String category);
 }

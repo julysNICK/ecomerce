@@ -5,7 +5,7 @@ import com.julys.eccomerce.eccomerce.entity.ProductOrder;
 
 public interface ProductOrderDAO {
 
-  String createProductOrder(ProductOrder productOrder);
+  ProductOrder createProductOrder(ProductOrder productOrder);
 
   ProductOrder findById(Long idOrder);
 

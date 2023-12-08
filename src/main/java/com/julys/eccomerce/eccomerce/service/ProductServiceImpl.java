@@ -44,4 +44,9 @@ public class ProductServiceImpl implements ProductService {
   public Product deleteProduct(Long id) {
     return productDAO.deleteProduct(id);
   }
+
+  @Override
+  public Iterable<Product> getByCategoryName(String name) {
+    return productDAO.findByCategory(name);
+  }
 }

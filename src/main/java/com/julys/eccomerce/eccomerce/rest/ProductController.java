@@ -1,10 +1,7 @@
 package com.julys.eccomerce.eccomerce.rest;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.julys.eccomerce.eccomerce.entity.Product;
 import com.julys.eccomerce.eccomerce.error.ErrorBuilder;
 import com.julys.eccomerce.eccomerce.error.ErrorFormat;
-import com.julys.eccomerce.eccomerce.response.ProductErrorResponse;
 import com.julys.eccomerce.eccomerce.response.ProductListResponse;
 import com.julys.eccomerce.eccomerce.response.ProductResponse;
 import com.julys.eccomerce.eccomerce.service.ProductService;
@@ -147,6 +143,19 @@ public class ProductController {
     productListResponseJson.setProducts(products);
 
     return new ResponseEntity<>(productListResponseJson, HttpStatus.OK);
+  }
+
+  @GetMapping("/category/{name}")
+  public ResponseEntity<?> getByCategoryName(@PathVariable String name) {
+    Iterable<Product> products = productService.getByCategoryName(name);
+    if (products == null || !products.iterator().hasNext()) {
+      ErrorFormat error = new ErrorFormat(HttpStatus.NOT_FOUND, "Products not found");
+
+      return new ErrorBuilder().buildResponseEntity(List.of(error.createError().get("error").toString()),
+          HttpStatus.NOT_FOUND);
+    }
+
+    return new ResponseEntity<>(products, HttpStatus.OK);
   }
 
 }

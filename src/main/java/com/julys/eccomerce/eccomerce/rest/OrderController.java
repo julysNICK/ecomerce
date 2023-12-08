@@ -2,7 +2,6 @@ package com.julys.eccomerce.eccomerce.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.julys.eccomerce.eccomerce.entity.Order;
 import com.julys.eccomerce.eccomerce.entity.User;
 import com.julys.eccomerce.eccomerce.request.RequestCreateOrder;
+import com.julys.eccomerce.eccomerce.response.OrderResponse;
 import com.julys.eccomerce.eccomerce.service.OrderService;
 import com.julys.eccomerce.eccomerce.service.UserService;
 import java.time.format.DateTimeFormatter;
-import io.micrometer.core.ipc.http.HttpSender.Request;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.OffsetDateTime;
 
 @RestController
 @RequestMapping("/api/order")
@@ -45,7 +41,19 @@ public class OrderController {
   @GetMapping("/{id}")
   public ResponseEntity<?> findById(@PathVariable Long id) {
     try {
-      return ResponseEntity.ok(orderService.findById(id));
+
+      OrderResponse orderResponse = new OrderResponse();
+
+      Order order = orderService.findById(id);
+
+      orderResponse.setMessage("Order found successfully");
+      orderResponse.setId(order.getId());
+      orderResponse.setDateOrder(order.getDateOrder().toString());
+      orderResponse.setStatusOrder(order.getStatusOrder());
+      orderResponse.setTotalOrder(order.getPriceTotal());
+      orderResponse.setUserEmail(order.getUserOrder().getEmail());
+
+      return ResponseEntity.ok(orderResponse.createJson());
     } catch (Exception e) {
 
       return ResponseEntity.badRequest().body(e.getMessage());
@@ -55,6 +63,7 @@ public class OrderController {
   @PostMapping("/create")
   public ResponseEntity<?> createOrder(@RequestBody RequestCreateOrder order) {
     try {
+      OrderResponse orderResponse = new OrderResponse();
 
       String format = "yyyy-MM-dd HH:mm:ss";
 
@@ -76,7 +85,14 @@ public class OrderController {
       orderToCreate.setUserOrder(user);
 
       Order orderSaved = orderService.createOrder(orderToCreate);
-      return ResponseEntity.ok(orderSaved);
+
+      orderResponse.setMessage("Order created successfully");
+      orderResponse.setId(orderSaved.getId());
+      orderResponse.setDateOrder(orderSaved.getDateOrder().toString());
+      orderResponse.setStatusOrder(orderSaved.getStatusOrder());
+      orderResponse.setTotalOrder(orderSaved.getPriceTotal());
+      orderResponse.setUserEmail(orderSaved.getUserOrder().getEmail());
+      return ResponseEntity.ok(orderResponse.createJson());
     } catch (InvalidDataAccessApiUsageException e) {
 
       return ResponseEntity.badRequest().body("Error creating order user id not found");
@@ -94,8 +110,19 @@ public class OrderController {
 
   @PatchMapping("/{id}")
   public ResponseEntity<?> updateOrder(@RequestBody Order order) {
+
     try {
-      return ResponseEntity.ok(orderService.updateOrder(order.getId(), order));
+      OrderResponse orderResponse = new OrderResponse();
+      Order orderUpdated = orderService.updateOrder(order.getId(), order);
+
+      orderResponse.setMessage("Order updated successfully");
+      orderResponse.setId(orderUpdated.getId());
+      orderResponse.setDateOrder(orderUpdated.getDateOrder().toString());
+      orderResponse.setStatusOrder(orderUpdated.getStatusOrder());
+      orderResponse.setTotalOrder(orderUpdated.getPriceTotal());
+      orderResponse.setUserEmail(orderUpdated.getUserOrder().getEmail());
+      return ResponseEntity.ok(orderResponse.createJson());
+
     } catch (Exception e) {
 
       return ResponseEntity.badRequest().body(e.getMessage());

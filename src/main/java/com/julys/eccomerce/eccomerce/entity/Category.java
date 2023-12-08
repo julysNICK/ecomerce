@@ -32,7 +32,7 @@ public class Category {
   private String name;
 
   @OneToMany(mappedBy = "category")
-  @JsonManagedReference
+  @JsonManagedReference(value = "categoryRef")
   private Set<ProductCategory> productCategories;
 
 }

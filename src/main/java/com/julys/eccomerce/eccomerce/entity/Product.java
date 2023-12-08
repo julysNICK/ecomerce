@@ -77,12 +77,11 @@ public class Product {
   }
 
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-
   @ToString.Exclude
   private java.util.Set<ProductOrder> productOrders;
 
   @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, orphanRemoval = true)
   @ToString.Exclude
-  @JsonManagedReference
+  @JsonManagedReference(value = "productCategoryRef")
   private java.util.Set<ProductCategory> productCategories;
 }

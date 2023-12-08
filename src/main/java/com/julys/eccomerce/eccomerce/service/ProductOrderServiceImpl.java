@@ -15,13 +15,13 @@ public class ProductOrderServiceImpl implements ProductOrderService {
   private ProductOrderDAO productOrderDAO;
 
   @Override
-  public String createProductOrder(ProductOrder productOrder) {
+  public ProductOrder createProductOrder(ProductOrder productOrder) {
     try {
-      productOrderDAO.createProductOrder(productOrder);
-      return "Product order created successfully";
+
+      return productOrderDAO.createProductOrder(productOrder);
     } catch (Exception e) {
-      System.out.println(e.getMessage());
-      return "Error creating product order: " + e.getMessage();
+
+      throw new RuntimeException("Error creating product order: " + e.getMessage());
     }
   }
 
@@ -37,7 +37,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     try {
       return productOrderDAO.findAll();
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       return null;
     }
   }
@@ -48,7 +48,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
       productOrderDAO.deleteProductOrder(idOrder);
       return "Product order deleted successfully";
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       return "Error deleting product order: " + e.getMessage();
     }
   }
@@ -58,7 +58,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     try {
       return productOrderDAO.findByOrder(idOrder);
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       return null;
     }
   }
@@ -68,7 +68,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     try {
       return productOrderDAO.findByProduct(idProduct);
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       return null;
     }
   }
@@ -78,7 +78,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     try {
       return productOrderDAO.updateProductOrder(productOrder);
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       return null;
     }
   }

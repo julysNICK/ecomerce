@@ -20,22 +20,20 @@ public class OrderDAOImpl implements OrderDAO {
   private OrderSql orderSql;
 
   @Override
-  public ErrorOrder findById(Long id) {
-    ErrorOrder errorOrder = new ErrorOrder();
+  public Order findById(Long id) {
+
     try {
       Order order = orderSql.findById(id).orElse(null);
 
       if (order == null) {
-        errorOrder.setErrorMessage("Order not found");
+        throw new Exception("Order not found");
       }
 
-      errorOrder.setOrder(order);
-
+      return order;
     } catch (Exception e) {
-      errorOrder.setErrorMessage("Error finding order " + e.getMessage());
+      throw new RuntimeException("Error finding order: " + e.getMessage());
     }
 
-    return errorOrder;
   }
 
   @Override
@@ -71,32 +69,31 @@ public class OrderDAOImpl implements OrderDAO {
   }
 
   @Override
-  public ErrorOrder updateOrder(Long id, Order order) {
-    ErrorOrder errorOrder = new ErrorOrder();
+  public Order updateOrder(Long id, Order order) {
+
     try {
 
       Order orderToUpdate = orderSql.findById(id).orElse(null);
 
       if (orderToUpdate == null) {
-        errorOrder.setErrorMessage("Order not found");
+        throw new Exception("Order not found");
       }
 
       Util.copyNonNullProperties(order, orderToUpdate);
 
       orderSql.save(orderToUpdate);
 
-      errorOrder.setOrder(orderToUpdate);
+      return orderToUpdate;
 
     } catch (Exception e) {
 
-      errorOrder.setErrorMessage("Error updating order " + e.getMessage());
-
       if (e.getMessage().contains("Target must not be null")) {
-        errorOrder.setErrorMessage("Error updating order, order not found");
+        throw new NullPointerException("Error updating order, order is required");
       }
+      throw new RuntimeException("Error updating order: " + e.getMessage());
+
     }
 
-    return errorOrder;
   }
 
   @Override

@@ -60,4 +60,15 @@ public class ProductDAOJpalmpl implements ProductDAO {
     return product;
   }
 
+  @Override
+  public Iterable<Product> findByCategory(String category) {
+    try {
+      return productSql.findByCategoryName(category);
+    } catch (org.springframework.dao.DataAccessResourceFailureException e) {
+      throw new org.springframework.dao.DataAccessResourceFailureException(
+          "Error finding products by category: " + e.getMessage());
+    } catch (Exception e) {
+      throw new NullPointerException("Error finding products by category: " + e.getMessage());
+    }
+  }
 }

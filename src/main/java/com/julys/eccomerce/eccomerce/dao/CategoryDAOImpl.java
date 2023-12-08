@@ -17,7 +17,12 @@ public class CategoryDAOImpl implements CategoryDAO {
   @Override
   public Category createCategory(Category category) {
     try {
-      return categorySql.save(category);
+
+      Category category2 = new Category();
+
+      category2.setName(category.getName().toLowerCase());
+
+      return categorySql.save(category2);
     } catch (org.springframework.dao.DataIntegrityViolationException e) {
       System.out.println("Error creating category: " + e.getMessage());
       if (e.getMessage().contains("name")) {

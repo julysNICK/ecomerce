@@ -23,6 +23,8 @@ import com.julys.eccomerce.eccomerce.request.RequestProductOrder;
 import com.julys.eccomerce.eccomerce.service.ProductOrderService;
 import com.julys.eccomerce.eccomerce.service.ProductService;
 
+import io.micrometer.core.ipc.http.HttpSender.Response;
+
 @RestController
 @RequestMapping("/api/productOrder")
 public class ProductOrderController {
@@ -41,33 +43,32 @@ public class ProductOrderController {
   }
 
   @PostMapping("/create")
-  public String createProductOrder(@RequestBody RequestProductOrder requestProductOrder) {
+  public ResponseEntity<?> createProductOrder(@RequestBody RequestProductOrder requestProductOrder) {
 
     try {
-      System.out.println("idOrder");
 
       if (requestProductOrder.getIdOrder() == null) {
-        return "idOrder is null";
+        return ResponseEntity.badRequest().body("idOrder is null");
       }
 
       if (requestProductOrder.getIdProduct() == null) {
-        return "idProduct is null";
+        return ResponseEntity.badRequest().body("idProduct is null");
       }
 
       if (requestProductOrder.getQuantity() == 0) {
-        return "Quantity is null";
+        return ResponseEntity.badRequest().body("Quantity is 0");
       }
 
       Product productFind = productService.findById(requestProductOrder.getIdProduct());
 
       if (productFind == null) {
-        return "Product not found";
+        return ResponseEntity.notFound().build();
       }
 
       Order orderFind = orderService.findById(requestProductOrder.getIdOrder()).orElse(null);
 
       if (orderFind == null) {
-        return "Order not found";
+        return ResponseEntity.notFound().build();
       }
 
       ProductOrder productOrder = new ProductOrder();
@@ -78,24 +79,24 @@ public class ProductOrderController {
 
       productOrder.setQuantity(requestProductOrder.getQuantity());
 
-      return productOrderService.createProductOrder(productOrder);
+      return ResponseEntity.status(201).body(productOrderService.createProductOrder(productOrder));
     } catch (DataIntegrityViolationException ex) {
 
-      return "Error creating Product Order";
+      return ResponseEntity.badRequest().body("Error creating Product Order");
 
     } catch (NullPointerException ex) {
 
-      return "Error creating Product Order";
+      return ResponseEntity.badRequest().body("Error creating Product Order");
 
     }
 
     catch (IllegalArgumentException ex) {
 
-      return "Error creating Product Order";
+      return ResponseEntity.badRequest().body("Error creating Product Order");
 
     } catch (Exception e) {
 
-      return "Error creating Product Order";
+      return ResponseEntity.badRequest().body("Error creating Product Order");
     }
   }
 
@@ -112,7 +113,6 @@ public class ProductOrderController {
 
       return ResponseEntity.ok(productOrderService.findById(idOrder));
     } catch (Exception e) {
-      System.out.println(e.getMessage());
 
       return ResponseEntity.badRequest().body("Error finding Product Order");
 
@@ -124,7 +124,7 @@ public class ProductOrderController {
     try {
       return productOrderService.findAll();
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       return null;
     }
   }
@@ -134,7 +134,7 @@ public class ProductOrderController {
     try {
       return productOrderService.deleteById(idOrder);
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       return "Error deleting Product Order";
     }
   }
@@ -144,7 +144,7 @@ public class ProductOrderController {
     try {
       return productOrderService.findByOrder(idOrder);
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       return null;
     }
   }
@@ -154,7 +154,7 @@ public class ProductOrderController {
     try {
       return productOrderService.findByProduct(idProduct);
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       return null;
     }
   }
@@ -189,7 +189,7 @@ public class ProductOrderController {
 
       return ResponseEntity.status(201).body(productOrderService.updateProductOrder(productOrder));
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+
       return ResponseEntity.badRequest().build();
     }
   }

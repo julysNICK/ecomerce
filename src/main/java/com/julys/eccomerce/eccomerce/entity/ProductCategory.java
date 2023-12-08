@@ -21,13 +21,13 @@ public class ProductCategory {
 
   @ManyToOne
   @JoinColumn(name = "product_id", insertable = false, updatable = false)
-  @JsonBackReference
+  @JsonBackReference(value = "productCategoryRef")
   private Product productCategory;
 
   @ManyToOne
 
   @JoinColumn(name = "category_id", insertable = false, updatable = false)
-  @JsonBackReference
+  @JsonBackReference(value = "categoryRef")
   private Category category;
 
 }

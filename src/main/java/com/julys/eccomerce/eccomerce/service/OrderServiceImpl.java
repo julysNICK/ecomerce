@@ -32,12 +32,12 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public ErrorOrder findById(Long id) {
+  public Order findById(Long id) {
     return orderDAO.findById(id);
   }
 
   @Override
-  public ErrorOrder updateOrder(Long id, Order order) {
+  public Order updateOrder(Long id, Order order) {
     return orderDAO.updateOrder(id, order);
   }
 

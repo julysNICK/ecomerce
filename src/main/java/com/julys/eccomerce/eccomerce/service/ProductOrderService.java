@@ -5,7 +5,7 @@ import java.util.List;
 import com.julys.eccomerce.eccomerce.entity.ProductOrder;
 
 public interface ProductOrderService {
-  public String createProductOrder(ProductOrder productOrder);
+  public ProductOrder createProductOrder(ProductOrder productOrder);
 
   public ProductOrder findById(Long idOrder);
 
