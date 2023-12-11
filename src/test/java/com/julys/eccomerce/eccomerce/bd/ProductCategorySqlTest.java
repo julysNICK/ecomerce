@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce;
+package com.julys.eccomerce.eccomerce.bd;
 
 import java.math.BigDecimal;
 

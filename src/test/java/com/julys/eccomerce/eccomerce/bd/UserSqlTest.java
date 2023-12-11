@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce;
+package com.julys.eccomerce.eccomerce.bd;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.julys.eccomerce.eccomerce.bd.UserSql;
 import com.julys.eccomerce.eccomerce.entity.User;
 
 @SpringBootTest

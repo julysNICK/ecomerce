@@ -1,4 +1,4 @@
-package com.julys.eccomerce.eccomerce;
+package com.julys.eccomerce.eccomerce.bd;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,7 +12,6 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.julys.eccomerce.eccomerce.bd.OrderSql;
 import com.julys.eccomerce.eccomerce.entity.Order;
 import com.julys.eccomerce.eccomerce.entity.User;
 

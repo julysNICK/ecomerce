@@ -1,14 +1,9 @@
-package com.julys.eccomerce.eccomerce;
+package com.julys.eccomerce.eccomerce.bd;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import com.julys.eccomerce.eccomerce.bd.OrderSql;
-import com.julys.eccomerce.eccomerce.bd.ProductOrderSql;
-import com.julys.eccomerce.eccomerce.bd.ProductSql;
 
 @SpringBootTest
 public class ProductOrderSqlTest {

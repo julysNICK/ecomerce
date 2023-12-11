@@ -1,11 +1,10 @@
-package com.julys.eccomerce.eccomerce;
+package com.julys.eccomerce.eccomerce.bd;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.julys.eccomerce.eccomerce.bd.ProductSql;
 import com.julys.eccomerce.eccomerce.entity.Product;
 
 import org.junit.jupiter.api.Test;
@@ -20,16 +19,6 @@ public class ProductSqlTest {
 
   @MockBean
   private ProductSql productSql;
-
-  // @BeforeAll
-  // public void setUp() {
-  // Product product = new Product();
-  // product.setName("Test");
-  // product.setPrice(new BigDecimal(10));
-  // product.setStock(new BigDecimal(10));
-
-  // Mockito.when(productSql.save(product)).thenReturn(product);
-  // }
 
   @Test
   public void testCreateProduct() {
