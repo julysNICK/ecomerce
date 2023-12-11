@@ -10,8 +10,6 @@ import com.julys.eccomerce.eccomerce.entity.Product;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -22,6 +20,16 @@ public class ProductSqlTest {
 
   @MockBean
   private ProductSql productSql;
+
+  // @BeforeAll
+  // public void setUp() {
+  // Product product = new Product();
+  // product.setName("Test");
+  // product.setPrice(new BigDecimal(10));
+  // product.setStock(new BigDecimal(10));
+
+  // Mockito.when(productSql.save(product)).thenReturn(product);
+  // }
 
   @Test
   public void testCreateProduct() {
