@@ -89,9 +89,10 @@ public class ProductController {
     return new ResponseEntity<>(productResponseJson.createJson(), headers, HttpStatus.CREATED);
   }
 
-  @PatchMapping("/{id}")
+  @PatchMapping("/update/{id}")
   public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product product) {
     ProductResponse productResponseJson = new ProductResponse();
+
     if (id == null) {
       ErrorFormat error = new ErrorFormat(HttpStatus.BAD_REQUEST, "Id is required");
       return new ErrorBuilder().buildResponseEntity(List.of(error.createError().get("error").toString()),

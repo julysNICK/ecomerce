@@ -237,6 +237,61 @@ public class ProductControllerTest {
 
   }
 
+  @WithMockUser
+  @Test
+  public void test_patch_product_not_found_json() throws Exception {
+    Product product = createProduct("Teste", "Teste", 10.0, 10L);
+
+    List<String> errors = List.of("Product not found");
+
+    ResponseEntity errorsJson = new ErrorBuilder().buildResponseEntity(errors,
+        HttpStatus.NOT_FOUND);
+
+    Mockito.when(productService.updateProduct(Mockito.anyLong(), Mockito.any(Product.class)))
+        .thenReturn(null);
+
+    mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/1")
+        .contentType("application/json")
+        .content(objectMapper.writeValueAsString(product)))
+        .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(errorsJson.getBody())));
+
+  }
+
+  @WithMockUser
+  @Test
+  public void test_patch_product_id_null_status() throws Exception {
+    Product product = createProduct("Teste", "Teste", 10.0, 10L);
+
+    Mockito.when(productService.updateProduct(Mockito.anyLong(), Mockito.any(Product.class)))
+        .thenReturn(product);
+
+    mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/")
+        .contentType("application/json")
+        .content(objectMapper.writeValueAsString(product)))
+        .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
+
+  }
+
+  @WithMockUser
+  @Test
+  public void test_patch_product_id_null_json() throws Exception {
+    Product product = createProduct("Teste", "Teste", 10.0, 10L);
+
+    List<String> errors = List.of("Id is required");
+
+    ResponseEntity errorsJson = new ErrorBuilder().buildResponseEntity(errors,
+        HttpStatus.BAD_REQUEST);
+
+    Mockito.when(productService.updateProduct(Mockito.anyLong(), Mockito.any(Product.class)))
+        .thenReturn(product);
+
+    mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/")
+        .contentType("application/json")
+        .content(objectMapper.writeValueAsString(product)))
+        .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(errorsJson.getBody())));
+
+  }
+
   private Product createProduct(String name, String description, Double priceArgument, Long stock) {
     BigDecimal price = BigDecimal.valueOf(priceArgument);
 
