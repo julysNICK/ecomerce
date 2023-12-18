@@ -32,7 +32,7 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(request -> request.getServletPath().startsWith("/api/auth")).permitAll())
         .authorizeHttpRequests(authorize -> authorize
-            .anyRequest().permitAll())
+            .anyRequest().authenticated())
         .authenticationProvider(
             authenticationProvider)
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

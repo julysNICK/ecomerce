@@ -11,6 +11,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,6 +33,8 @@ import lombok.ToString;
 @DynamicUpdate
 @Transactional
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonDeserialize(as = User.class)
 public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -151,8 +157,14 @@ public class User implements UserDetails {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
 
-    return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    if (this.role == null) {
+      return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    return authorities;
   }
+
+  private transient List<GrantedAuthority> authorities;
 
   @Override
   public boolean isAccountNonExpired() {

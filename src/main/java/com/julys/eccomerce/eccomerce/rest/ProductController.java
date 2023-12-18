@@ -71,10 +71,13 @@ public class ProductController {
     ProductResponse productResponseJson = new ProductResponse();
 
     headers.add("Custom-Header", "my-custom-header");
+    System.out.println("Product: " + product);
 
     List<String> errors = new ProductValidator().validateProduct(product);
 
     if (errors != null) {
+
+      System.out.println("error builder: " + new ErrorBuilder().buildResponseEntity(errors, HttpStatus.BAD_REQUEST));
       return new ErrorBuilder().buildResponseEntity(errors, HttpStatus.BAD_REQUEST);
     }
 
