@@ -46,119 +46,40 @@ public class ProductController {
 
   @GetMapping("/{id}")
   @ResponseBody
-  public ResponseEntity findById(@PathVariable Long id) {
-    HttpHeaders headers = new HttpHeaders();
-    ProductResponse productResponseJson = new ProductResponse();
-
-    headers.add("Custom-Header", "my-custom-header");
-
-    Product product = productService.findById(id);
-
-    if (product == null) {
-      return new ErrorBuilder().buildResponseEntity(List.of("Product not found"), HttpStatus.NOT_FOUND);
-    }
-
-    productResponseJson.setStatus("OK");
-    productResponseJson.setMessage("Product found");
-    productResponseJson.setProduct(product);
-
-    return new ResponseEntity<>(productResponseJson.createJson(), headers, HttpStatus.OK);
+  public ResponseEntity<?> findById(@PathVariable Long id) {
+    return productService.findById(id);
   }
 
   @PostMapping("/")
   public ResponseEntity<?> createProduct(@RequestBody Product product) {
-    HttpHeaders headers = new HttpHeaders();
-    ProductResponse productResponseJson = new ProductResponse();
 
-    headers.add("Custom-Header", "my-custom-header");
-    System.out.println("Product: " + product);
+    return productService.createProduct(product);
 
-    List<String> errors = new ProductValidator().validateProduct(product);
-
-    if (errors != null) {
-
-      System.out.println("error builder: " + new ErrorBuilder().buildResponseEntity(errors, HttpStatus.BAD_REQUEST));
-      return new ErrorBuilder().buildResponseEntity(errors, HttpStatus.BAD_REQUEST);
-    }
-
-    Product response = productService.createProduct(product);
-    productResponseJson.setStatus("OK");
-    productResponseJson.setMessage("Product created");
-    productResponseJson.setProduct(response);
-
-    return new ResponseEntity<>(productResponseJson.createJson(), headers, HttpStatus.CREATED);
   }
 
   @PatchMapping("/update/{id}")
   public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-    ProductResponse productResponseJson = new ProductResponse();
 
-    if (id == null) {
-      ErrorFormat error = new ErrorFormat(HttpStatus.BAD_REQUEST, "Id is required");
-      return new ErrorBuilder().buildResponseEntity(List.of(error.createError().get("error").toString()),
-          HttpStatus.BAD_REQUEST);
-    }
+    return productService.updateProduct(id, product);
 
-    Product response = productService.updateProduct(id, product);
-
-    if (response == null) {
-      return new ErrorBuilder().buildResponseEntity(List.of("Product not found"), HttpStatus.NOT_FOUND);
-    }
-
-    productResponseJson.setStatus("OK");
-    productResponseJson.setMessage("Product updated");
-    productResponseJson.setProduct(response);
-
-    return new ResponseEntity<>(productResponseJson.createJson(), HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
-    ProductResponse productResponseJson = new ProductResponse();
-    Product response = productService.deleteProduct(id);
+    return productService.deleteProduct(id);
 
-    if (response == null) {
-      return new ErrorBuilder().buildResponseEntity(List.of("Product not found"), HttpStatus.NOT_FOUND);
-    }
-
-    productResponseJson.setStatus("OK");
-    productResponseJson.setMessage("Product deleted");
-    productResponseJson.setProduct(response);
-
-    return new ResponseEntity<>(productResponseJson.createJson(), HttpStatus.OK);
   }
 
   @GetMapping("/all")
   public ResponseEntity<?> allProducts() {
-    ProductListResponse productListResponseJson = new ProductListResponse();
+    return productService.allProducts();
 
-    List<Product> products = productService.allProducts();
-
-    if (products == null) {
-      ErrorFormat error = new ErrorFormat(HttpStatus.NOT_FOUND, "Products not found");
-
-      return new ErrorBuilder().buildResponseEntity(List.of(error.createError().get("error").toString()),
-          HttpStatus.NOT_FOUND);
-    }
-
-    productListResponseJson.setStatus("OK");
-    productListResponseJson.setMessage("Products found");
-    productListResponseJson.setProducts(products);
-
-    return new ResponseEntity<>(productListResponseJson, HttpStatus.OK);
   }
 
   @GetMapping("/category/{name}")
   public ResponseEntity<?> getByCategoryName(@PathVariable String name) {
-    Iterable<Product> products = productService.getByCategoryName(name);
-    if (products == null || !products.iterator().hasNext()) {
-      ErrorFormat error = new ErrorFormat(HttpStatus.NOT_FOUND, "Products not found");
+    return productService.getByCategoryName(name);
 
-      return new ErrorBuilder().buildResponseEntity(List.of(error.createError().get("error").toString()),
-          HttpStatus.NOT_FOUND);
-    }
-
-    return new ResponseEntity<>(products, HttpStatus.OK);
   }
 
 }

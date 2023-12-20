@@ -2,22 +2,24 @@ package com.julys.eccomerce.eccomerce.service.product;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.julys.eccomerce.eccomerce.entity.Product;
 
 /**
  * ProductService
  */
 public interface ProductService {
-  Product findById(Long id);
+  ResponseEntity<?> findById(Long id);
 
-  List<Product> allProducts();
+  ResponseEntity<?> allProducts();
 
-  Product createProduct(Product product);
+  ResponseEntity<?> createProduct(Product product);
 
-  Product updateProduct(Long id, Product product);
+  ResponseEntity<?> updateProduct(Long id, Product product);
 
-  Product deleteProduct(Long id);
+  ResponseEntity<?> deleteProduct(Long id);
 
-  Iterable<Product> getByCategoryName(String name);
+  ResponseEntity<?> getByCategoryName(String name);
 
 }

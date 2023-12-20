@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.julys.eccomerce.eccomerce.dao.category.CategoryDAO;
+import com.julys.eccomerce.eccomerce.dao.product.ProductDAO;
 import com.julys.eccomerce.eccomerce.dao.productCategory.ProductCategoriesDAO;
 import com.julys.eccomerce.eccomerce.entity.Category;
 import com.julys.eccomerce.eccomerce.entity.Product;
@@ -22,7 +23,7 @@ public class CategoryProductServiceImpl implements CategoryProductService {
   private ProductCategoriesDAO categoryProductDAO;
 
   @Autowired
-  private ProductService productService;
+  private ProductDAO productService;
 
   @Autowired
   private CategoryDAO categoryDao;

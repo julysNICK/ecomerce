@@ -2,20 +2,23 @@ package com.julys.eccomerce.eccomerce.service.productOrder;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.julys.eccomerce.eccomerce.entity.ProductOrder;
+import com.julys.eccomerce.eccomerce.request.product.RequestProductOrder;
 
 public interface ProductOrderService {
-  public ProductOrder createProductOrder(ProductOrder productOrder);
+  public ResponseEntity<?> createProductOrder(RequestProductOrder requestProductOrder);
 
-  public ProductOrder findById(Long idOrder);
+  public ResponseEntity<?> findById(Long idOrder);
 
-  public List<ProductOrder> findAll();
+  public ResponseEntity<?> findAll();
 
-  public String deleteById(Long idOrder);
+  public ResponseEntity<?> deleteById(Long idOrder);
 
-  public List<ProductOrder> findByOrder(Long idOrder);
+  public ResponseEntity<?> findByOrder(Long idOrder);
 
-  public List<ProductOrder> findByProduct(Long idProduct);
+  public ResponseEntity<?> findByProduct(Long idProduct);
 
-  public ProductOrder updateProductOrder(ProductOrder productOrder);
+  public ResponseEntity<?> updateProductOrder(Long idOrder, RequestProductOrder requestProductOrder);
 }
