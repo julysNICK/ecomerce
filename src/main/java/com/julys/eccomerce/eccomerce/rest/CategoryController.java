@@ -27,46 +27,29 @@ public class CategoryController {
 
   @PostMapping("/")
   public ResponseEntity<?> createCategory(@RequestBody Category entity) {
-    try {
-      System.out.println("entity: " + entity.getName() + " ");
-      return ResponseEntity.ok(categoryService.createCategory(entity));
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
-    }
+    return categoryService.createCategory(entity);
   }
 
   @GetMapping("/")
   public ResponseEntity<?> getMethodName() {
-    try {
-      return ResponseEntity.ok(categoryService.getCategories());
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
-    }
+
+    return categoryService.getCategories();
+
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
-    try {
-
-      Category category = categoryService.getCategoryById(id);
-
-      if (category == null) {
-        return ResponseEntity.badRequest().body("Category not found");
-      }
-
-      return ResponseEntity.ok(category);
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
-    }
+    return categoryService.getCategoryById(id);
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteCategoryById(@PathVariable Long id) {
-    try {
-      return ResponseEntity.ok(categoryService.deleteCategoryById(id));
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
-    }
+    return categoryService.deleteCategoryById(id);
+  }
+
+  @GetMapping("/name/{name}")
+  public ResponseEntity<?> getCategoryByName(@PathVariable String name) {
+    return categoryService.getCategoryByName(name);
   }
 
 }

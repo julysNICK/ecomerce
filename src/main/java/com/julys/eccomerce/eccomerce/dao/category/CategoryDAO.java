@@ -13,4 +13,6 @@ public interface CategoryDAO {
   Category getCategoryById(Long id);
 
   String deleteCategoryById(Long id);
+
+  List<Category> getCategoryByName(String name);
 }

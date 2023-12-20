@@ -3,12 +3,16 @@ package com.julys.eccomerce.eccomerce.service.category;
 import com.julys.eccomerce.eccomerce.entity.Category;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 public interface CategoryService {
-  public Category createCategory(Category category);
+  public ResponseEntity<?> createCategory(Category category);
 
-  public List<Category> getCategories();
+  public ResponseEntity<?> getCategories();
 
-  public Category getCategoryById(Long id);
+  public ResponseEntity<?> getCategoryById(Long id);
 
-  public String deleteCategoryById(Long id);
+  public ResponseEntity<?> deleteCategoryById(Long id);
+
+  public ResponseEntity<?> getCategoryByName(String name);
 }

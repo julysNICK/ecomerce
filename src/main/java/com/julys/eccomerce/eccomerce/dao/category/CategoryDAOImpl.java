@@ -78,4 +78,13 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
   }
 
+  @Override
+  public List<Category> getCategoryByName(String name) {
+    try {
+      return categorySql.findByCategoryByName(name);
+    } catch (Exception e) {
+      throw new NullPointerException("Error getting category: " + e.getMessage());
+    }
+  }
+
 }

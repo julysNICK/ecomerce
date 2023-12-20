@@ -1,7 +1,9 @@
 package com.julys.eccomerce.eccomerce.service.categoryProduct;
 
+import org.springframework.http.ResponseEntity;
+
 import com.julys.eccomerce.eccomerce.entity.ProductCategory;
 
 public interface CategoryProductService {
-  public ProductCategory addProductToCategory(Long categoryId, Long productId);
+  public ResponseEntity<?> addProductToCategory(Long categoryId, Long productId);
 }

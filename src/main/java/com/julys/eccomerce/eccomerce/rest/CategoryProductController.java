@@ -21,14 +21,8 @@ public class CategoryProductController {
   @PostMapping("/")
   public ResponseEntity<?> addProductToCategory(@RequestBody CategoryProductRequest entity) {
 
-    try {
-      return ResponseEntity
-          .ok(categoryProductService.addProductToCategory(entity.getCategoryId(), entity.getProductId()));
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
+    return categoryProductService.addProductToCategory(entity.getCategoryId(), entity.getProductId());
 
-      return ResponseEntity.badRequest().body(e.getMessage());
-    }
   }
 
 }
