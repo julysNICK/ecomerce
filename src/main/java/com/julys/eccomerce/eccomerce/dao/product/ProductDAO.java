@@ -3,7 +3,6 @@ package com.julys.eccomerce.eccomerce.dao.product;
 import java.util.List;
 
 import com.julys.eccomerce.eccomerce.entity.Product;
-import com.julys.eccomerce.eccomerce.entity.User;
 
 /**
  * ProductDAO

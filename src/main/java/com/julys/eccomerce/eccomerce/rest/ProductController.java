@@ -1,10 +1,6 @@
 package com.julys.eccomerce.eccomerce.rest;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.julys.eccomerce.eccomerce.entity.Product;
-import com.julys.eccomerce.eccomerce.error.ErrorBuilder;
-import com.julys.eccomerce.eccomerce.error.ErrorFormat;
-import com.julys.eccomerce.eccomerce.response.product.ProductListResponse;
-import com.julys.eccomerce.eccomerce.response.product.ProductResponse;
 import com.julys.eccomerce.eccomerce.service.product.ProductService;
-import com.julys.eccomerce.eccomerce.validator.ProductValidator;
 
 /**
  * ProductController

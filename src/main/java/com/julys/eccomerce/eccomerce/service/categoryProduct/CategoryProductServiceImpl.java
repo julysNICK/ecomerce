@@ -1,7 +1,5 @@
 package com.julys.eccomerce.eccomerce.service.categoryProduct;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -13,8 +11,6 @@ import com.julys.eccomerce.eccomerce.entity.Category;
 import com.julys.eccomerce.eccomerce.entity.Product;
 import com.julys.eccomerce.eccomerce.entity.ProductCategory;
 import com.julys.eccomerce.eccomerce.entity.ProductCategoryId;
-import com.julys.eccomerce.eccomerce.service.category.CategoryService;
-import com.julys.eccomerce.eccomerce.service.product.ProductService;
 
 @Component
 public class CategoryProductServiceImpl implements CategoryProductService {

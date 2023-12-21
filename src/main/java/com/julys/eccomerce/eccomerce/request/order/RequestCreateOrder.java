@@ -1,7 +1,5 @@
 package com.julys.eccomerce.eccomerce.request.order;
 
-import java.time.LocalDateTime;
-
 public class RequestCreateOrder {
 
   private String dateOrder;

@@ -1,8 +1,6 @@
 package com.julys.eccomerce.eccomerce.service.category;
 
 import com.julys.eccomerce.eccomerce.entity.Category;
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 
 public interface CategoryService {

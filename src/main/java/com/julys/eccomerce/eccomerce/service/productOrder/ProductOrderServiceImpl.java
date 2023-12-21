@@ -12,7 +12,6 @@ import com.julys.eccomerce.eccomerce.entity.Order;
 import com.julys.eccomerce.eccomerce.entity.Product;
 import com.julys.eccomerce.eccomerce.entity.ProductOrder;
 import com.julys.eccomerce.eccomerce.request.product.RequestProductOrder;
-import com.julys.eccomerce.eccomerce.service.product.ProductService;
 
 @Component
 public class ProductOrderServiceImpl implements ProductOrderService {

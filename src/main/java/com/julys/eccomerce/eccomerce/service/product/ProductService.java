@@ -1,7 +1,5 @@
 package com.julys.eccomerce.eccomerce.service.product;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 
 import com.julys.eccomerce.eccomerce.entity.Product;

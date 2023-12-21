@@ -1,10 +1,7 @@
 package com.julys.eccomerce.eccomerce.service.productOrder;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 
-import com.julys.eccomerce.eccomerce.entity.ProductOrder;
 import com.julys.eccomerce.eccomerce.request.product.RequestProductOrder;
 
 public interface ProductOrderService {

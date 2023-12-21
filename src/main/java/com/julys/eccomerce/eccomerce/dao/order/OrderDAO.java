@@ -1,7 +1,6 @@
 package com.julys.eccomerce.eccomerce.dao.order;
 
 import com.julys.eccomerce.eccomerce.entity.Order;
-import com.julys.eccomerce.eccomerce.error.ErrorOrder;
 import com.julys.eccomerce.eccomerce.response.order.ListOrderWithUsers;
 
 public interface OrderDAO {

@@ -14,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.julys.eccomerce.eccomerce.bd.UserSql;
 import lombok.RequiredArgsConstructor;
 
-// this class is used to configure the authentication manager and the password
-// encoder for the application.
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
