@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.julys.eccomerce.eccomerce.config.SecurityConfiguration;
 import com.julys.eccomerce.eccomerce.entity.Product;
@@ -24,6 +25,8 @@ import com.julys.eccomerce.eccomerce.service.JwtService;
 import com.julys.eccomerce.eccomerce.service.product.ProductService;
 import com.julys.eccomerce.eccomerce.validator.ProductValidator;
 
+import io.micrometer.core.ipc.http.HttpSender.Response;
+
 import java.util.List;
 
 import java.math.BigDecimal;
@@ -31,306 +34,295 @@ import java.math.BigDecimal;
 @WebMvcTest(ProductController.class)
 @Import(SecurityConfiguration.class)
 public class ProductControllerTest {
-    @MockBean
-    private ProductService productService;
+        @MockBean
+        private ProductService productService;
 
-    @MockBean
-    private JwtService jwtService;
+        @MockBean
+        private JwtService jwtService;
 
-    @MockBean
-    private AuthenticationProvider authenticationProvider;
+        @MockBean
+        private AuthenticationProvider authenticationProvider;
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+        @Autowired
+        private ObjectMapper objectMapper;
 
-    @Test
-    public void test_requisition_without_jwt() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/products/hello"))
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
-    }
+        @Test
+        public void test_requisition_without_jwt() throws Exception {
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/products/hello"))
+                                .andExpect(MockMvcResultMatchers.status().isForbidden());
+        }
 
-    @WithMockUser
-    @Test
-    public void test_create_product_status_success() throws Exception {
+        @WithMockUser
+        @Test
+        public void test_create_product_status_success() throws Exception {
 
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+                Product product = createProduct("Teste", "Teste", 10.0, 10L);
 
-        Mockito.when(productService.createProduct(Mockito.any(Product.class)))
-                .thenReturn(product);
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.CREATED).body(product))
+                                .when(productService).createProduct(Mockito.any(Product.class));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/products/")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
-    }
+                mockMvc.perform(MockMvcRequestBuilders.post("/api/products/")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.status().isCreated());
+        }
 
-    @WithMockUser
-    @Test
-    public void test_create_product_json_success() throws Exception {
+        @WithMockUser
+        @Test
+        public void test_create_product_json_success() throws Exception {
 
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+                Product product = createProduct("Teste", "Teste", 10.0, 10L);
 
-        ProductResponse productResponse = createProductResponse(product);
+                ProductResponse productResponse = createProductResponse(product);
 
-        Mockito.when(productService.createProduct(Mockito.any(Product.class)))
-                .thenReturn(product);
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.CREATED).body(productResponse))
+                                .when(productService).createProduct(Mockito.any(Product.class));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/products/")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(productResponse)));
-    }
+                mockMvc.perform(MockMvcRequestBuilders.post("/api/products/")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.content()
+                                                .json(objectMapper.writeValueAsString(productResponse)));
+        }
 
-    @WithMockUser
-    @Test
-    public void test_create_product_argument_blank_status() throws Exception {
+        @WithMockUser
+        @Test
+        public void test_create_product_argument_blank_status() throws Exception {
 
-        Product product = createProduct("", "", 10.0, 10L);
+                Product product = createProduct("", "", 10.0, 10L);
 
-        Mockito.when(productService.createProduct(Mockito.any(Product.class)))
-                .thenReturn(product);
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(product))
+                                .when(productService).createProduct(Mockito.any(Product.class));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/products/")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
+                mockMvc.perform(MockMvcRequestBuilders.post("/api/products/")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        }
 
-    @WithMockUser
-    @Test
-    public void test_create_product_argument_blank_json() throws Exception {
+        @WithMockUser
+        @Test
+        public void test_create_product_argument_blank_json() throws Exception {
 
-        Product product = createProduct("", "", 10.0, 10L);
+                Product product = createProduct("", "", 10.0, 10L);
 
-        List<String> errors = new ProductValidator().validateProduct(product);
+                List<String> errors = new ProductValidator().validateProduct(product);
 
-        ResponseEntity errorsJson = new ErrorBuilder().buildResponseEntity(errors,
-                HttpStatus.BAD_REQUEST);
+                ResponseEntity errorsJson = new ErrorBuilder().buildResponseEntity(errors,
+                                HttpStatus.BAD_REQUEST);
 
-        Mockito.when(productService.createProduct(Mockito.any(Product.class)))
-                .thenReturn(product);
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsJson.getBody()))
+                                .when(productService).createProduct(Mockito.any(Product.class));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/products/")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(errorsJson.getBody())));
-    }
+                mockMvc.perform(MockMvcRequestBuilders.post("/api/products/")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.content()
+                                                .json(objectMapper.writeValueAsString(errorsJson.getBody())));
+        }
 
-    // delete
-    @WithMockUser
-    @Test
-    public void test_delete_product_success_status() throws Exception {
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+        // delete
+        @WithMockUser
+        @Test
+        public void test_delete_product_success_status() throws Exception {
+                Product product = createProduct("Teste", "Teste", 10.0, 10L);
 
-        Mockito.when(productService.deleteProduct(Mockito.anyLong()))
-                .thenReturn(product);
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.OK).body(product))
+                                .when(productService).deleteProduct(Mockito.anyLong());
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/products/1")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/products/1")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.status().isOk());
 
-    }
+        }
+
+        @WithMockUser
+        @Test
+        public void test_delete_product_success_json() throws Exception {
+                Product product = createProduct("Teste", "Teste", 10.0, 10L);
 
-    @WithMockUser
-    @Test
-    public void test_delete_product_success_json() throws Exception {
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+                ProductResponse productResponse = deleteProductResponse(product);
 
-        ProductResponse productResponse = deleteProductResponse(product);
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.OK).body(productResponse))
+                                .when(productService).deleteProduct(Mockito.anyLong());
 
-        Mockito.when(productService.deleteProduct(Mockito.anyLong()))
-                .thenReturn(product);
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/products/1")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.content()
+                                                .json(objectMapper.writeValueAsString(productResponse)));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/products/1")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(productResponse)));
+        }
 
-    }
+        @WithMockUser
+        @Test
+        public void test_delete_product_not_found_status() throws Exception {
+                Product product = createProduct("Teste", "Teste", 10.0, 10L);
 
-    @WithMockUser
-    @Test
-    public void test_delete_product_not_found_status() throws Exception {
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(product))
+                                .when(productService).deleteProduct(Mockito.anyLong());
 
-        Mockito.when(productService.deleteProduct(Mockito.anyLong()))
-                .thenReturn(null);
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/products/1")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/products/1")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        }
 
-    }
+        @WithMockUser
+        @Test
+        public void test_delete_product_not_found_json() throws Exception {
+                Product product = createProduct("Teste", "Teste", 10.0, 10L);
 
-    @WithMockUser
-    @Test
-    public void test_delete_product_not_found_json() throws Exception {
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+                List<String> errors = List.of("Product not found");
+
+                ResponseEntity errorsJson = new ErrorBuilder().buildResponseEntity(errors,
+                                HttpStatus.NOT_FOUND);
 
-        List<String> errors = List.of("Product not found");
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsJson.getBody()))
+                                .when(productService).deleteProduct(Mockito.anyLong());
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/products/1")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.content()
+                                                .json(objectMapper.writeValueAsString(errorsJson.getBody())));
 
-        ResponseEntity errorsJson = new ErrorBuilder().buildResponseEntity(errors,
-                HttpStatus.NOT_FOUND);
+        }
 
-        Mockito.when(productService.deleteProduct(Mockito.anyLong()))
-                .thenReturn(null);
+        // test patch
+        @WithMockUser
+        @Test
+        public void test_patch_product_success_status() throws Exception {
+                Product product = createProduct("Teste", "Teste", 10.0, 10L);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/products/1")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(errorsJson.getBody())));
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.OK).body(product))
+                                .when(productService).updateProduct(Mockito.anyLong(),
+                                                Mockito.any(Product.class));
+                mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/update/1")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.status().isOk());
 
-    }
+        }
 
-    // test patch
-    @WithMockUser
-    @Test
-    public void test_patch_product_success_status() throws Exception {
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+        @WithMockUser
+        @Test
+        public void test_patch_product_success_json() throws Exception {
+                Product product = createProduct("Teste", "Teste", 10.0, 10L);
 
-        Mockito.when(productService.updateProduct(Mockito.anyLong(), Mockito.any(Product.class)))
-                .thenReturn(product);
+                ProductResponse productResponse = updateProductResponse(product);
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/1")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.OK).body(productResponse))
+                                .when(productService).updateProduct(Mockito.anyLong(),
+                                                Mockito.any(Product.class));
 
-    }
+                mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/update/1")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.content()
+                                                .json(objectMapper.writeValueAsString(productResponse)));
 
-    @WithMockUser
-    @Test
-    public void test_patch_product_success_json() throws Exception {
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+        }
 
-        ProductResponse productResponse = updateProductResponse(product);
+        @WithMockUser
+        @Test
+        public void test_patch_product_not_found_status() throws Exception {
+                Product product = createProduct("Teste", "Teste", 10.0, 10L);
 
-        Mockito.when(productService.updateProduct(Mockito.anyLong(), Mockito.any(Product.class)))
-                .thenReturn(product);
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(product))
+                                .when(productService).updateProduct(Mockito.anyLong(),
+                                                Mockito.any(Product.class));
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/1")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(productResponse)));
+                mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/update/1")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-    }
+        }
 
-    @WithMockUser
-    @Test
-    public void test_patch_product_not_found_status() throws Exception {
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+        @WithMockUser
+        @Test
+        public void test_patch_product_not_found_json() throws Exception {
+                Product product = createProduct("Teste", "Teste", 10.0, 10L);
 
-        Mockito.when(productService.updateProduct(Mockito.anyLong(), Mockito.any(Product.class)))
-                .thenReturn(null);
+                List<String> errors = List.of("Product not found");
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/1")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                ResponseEntity errorsJson = new ErrorBuilder().buildResponseEntity(errors,
+                                HttpStatus.NOT_FOUND);
 
-    }
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsJson.getBody()))
+                                .when(productService).updateProduct(Mockito.anyLong(),
+                                                Mockito.any(Product.class));
 
-    @WithMockUser
-    @Test
-    public void test_patch_product_not_found_json() throws Exception {
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+                mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/update/1")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.content()
+                                                .json(objectMapper.writeValueAsString(errorsJson.getBody())));
 
-        List<String> errors = List.of("Product not found");
+        }
 
-        ResponseEntity errorsJson = new ErrorBuilder().buildResponseEntity(errors,
-                HttpStatus.NOT_FOUND);
+        @WithMockUser
+        @Test
+        public void test_patch_product_id_null_status() throws Exception {
+                Product product = createProduct("Teste", "Teste", 10.0, 10L);
 
-        Mockito.when(productService.updateProduct(Mockito.anyLong(), Mockito.any(Product.class)))
-                .thenReturn(null);
+                Mockito.doReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(product))
+                                .when(productService).updateProduct(Mockito.anyLong(),
+                                                Mockito.any(Product.class));
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/1")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(errorsJson.getBody())));
+                mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/update/")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(product)))
+                                .andExpect(MockMvcResultMatchers.status().isNotFound());
 
-    }
+        }
 
-    @WithMockUser
-    @Test
-    public void test_patch_product_id_null_status() throws Exception {
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+        private Product createProduct(String name, String description, Double priceArgument, Long stock) {
+                BigDecimal price = BigDecimal.valueOf(priceArgument);
 
-        Mockito.when(productService.updateProduct(Mockito.anyLong(), Mockito.any(Product.class)))
-                .thenReturn(product);
+                BigDecimal stockConv = new BigDecimal(stock);
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
+                Product product = new Product();
+                product.setName(name);
+                product.setDescription(description);
+                product.setPrice(price);
+                product.setStock(stockConv);
 
-    }
+                return product;
+        }
 
-    @WithMockUser
-    @Test
-    public void test_patch_product_id_null_json() throws Exception {
-        Product product = createProduct("Teste", "Teste", 10.0, 10L);
+        private ProductResponse createProductResponse(Product product) {
+                ProductResponse productResponse = new ProductResponse();
+                productResponse.setStatus("OK");
+                productResponse.setMessage("Product created");
+                productResponse.setProduct(product);
 
-        List<String> errors = List.of("Id is required");
+                return productResponse;
 
-        ResponseEntity errorsJson = new ErrorBuilder().buildResponseEntity(errors,
-                HttpStatus.BAD_REQUEST);
+        }
 
-        Mockito.when(productService.updateProduct(Mockito.anyLong(), Mockito.any(Product.class)))
-                .thenReturn(product);
+        private ProductResponse deleteProductResponse(Product product) {
+                ProductResponse productResponse = new ProductResponse();
+                productResponse.setStatus("OK");
+                productResponse.setMessage("Product deleted");
+                productResponse.setProduct(product);
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/products/")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(errorsJson.getBody())));
+                return productResponse;
 
-    }
+        }
 
-    private Product createProduct(String name, String description, Double priceArgument, Long stock) {
-        BigDecimal price = BigDecimal.valueOf(priceArgument);
+        private ProductResponse updateProductResponse(Product product) {
+                ProductResponse productResponse = new ProductResponse();
+                productResponse.setStatus("OK");
+                productResponse.setMessage("Product updated");
+                productResponse.setProduct(product);
 
-        BigDecimal stockConv = new BigDecimal(stock);
+                return productResponse;
 
-        Product product = new Product();
-        product.setName(name);
-        product.setDescription(description);
-        product.setPrice(price);
-        product.setStock(stockConv);
-
-        return product;
-    }
-
-    private ProductResponse createProductResponse(Product product) {
-        ProductResponse productResponse = new ProductResponse();
-        productResponse.setStatus("OK");
-        productResponse.setMessage("Product created");
-        productResponse.setProduct(product);
-
-        return productResponse;
-
-    }
-
-    private ProductResponse deleteProductResponse(Product product) {
-        ProductResponse productResponse = new ProductResponse();
-        productResponse.setStatus("OK");
-        productResponse.setMessage("Product deleted");
-        productResponse.setProduct(product);
-
-        return productResponse;
-
-    }
-
-    private ProductResponse updateProductResponse(Product product) {
-        ProductResponse productResponse = new ProductResponse();
-        productResponse.setStatus("OK");
-        productResponse.setMessage("Product updated");
-        productResponse.setProduct(product);
-
-        return productResponse;
-
-    }
+        }
 }

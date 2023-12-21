@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -74,12 +75,13 @@ public class OrderControllerTest {
 
     Mockito.when(userService.findById(Mockito.anyLong())).thenReturn(userCreated);
 
-    Mockito.when(orderService.createOrder(Mockito.any(Order.class))).thenReturn(orderCreated);
+    Mockito.doReturn(ResponseEntity.status(200).body(orderResponse)).when(orderService)
+        .createOrder(Mockito.any(RequestCreateOrder.class));
 
     mockMvc.perform(MockMvcRequestBuilders.post("/api/order/create").contentType("application/json")
         .content(objectMapper.writeValueAsString(requestCreateOrder)))
         .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().json(orderResponse.toString()));
+        .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Order created successfully"));
 
   }
 

@@ -8,14 +8,10 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.julys.eccomerce.eccomerce.dao.order.OrderDAO;
-import com.julys.eccomerce.eccomerce.dao.user.UserDAO;
 import com.julys.eccomerce.eccomerce.entity.Order;
 import com.julys.eccomerce.eccomerce.entity.User;
-import com.julys.eccomerce.eccomerce.error.ErrorOrder;
 import com.julys.eccomerce.eccomerce.request.order.RequestCreateOrder;
-import com.julys.eccomerce.eccomerce.response.order.ListOrderWithUsers;
 import com.julys.eccomerce.eccomerce.response.order.OrderResponse;
 import com.julys.eccomerce.eccomerce.service.user.UserService;
 

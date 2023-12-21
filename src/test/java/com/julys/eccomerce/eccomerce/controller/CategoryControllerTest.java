@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -49,7 +50,7 @@ public class CategoryControllerTest {
 
     Category category = createCategory("Teste");
 
-    Mockito.when(categoryService.createCategory(Mockito.any(Category.class))).thenReturn(category);
+    Mockito.doReturn(ResponseEntity.ok(category)).when(categoryService).createCategory(Mockito.any(Category.class));
 
     mockMvc.perform(MockMvcRequestBuilders.post("/api/category/")
         .contentType("application/json")
@@ -63,7 +64,7 @@ public class CategoryControllerTest {
 
     Category category = createCategory("Teste");
 
-    Mockito.when(categoryService.getCategoryById(Mockito.anyLong())).thenReturn(category);
+    Mockito.doReturn(ResponseEntity.ok(category)).when(categoryService).getCategoryById(Mockito.anyLong());
 
     mockMvc.perform(MockMvcRequestBuilders.get("/api/category/1")
         .contentType("application/json")
@@ -75,7 +76,8 @@ public class CategoryControllerTest {
   @Test
   public void test_get_category_not_found_status() throws Exception {
 
-    Mockito.when(categoryService.getCategoryById(Mockito.anyLong())).thenReturn(null);
+    Mockito.doReturn(ResponseEntity.badRequest().build()).when(categoryService)
+        .getCategoryById(Mockito.anyLong());
 
     mockMvc.perform(MockMvcRequestBuilders.get("/api/category/1")
         .contentType("application/json"))
@@ -86,7 +88,8 @@ public class CategoryControllerTest {
   @Test
   public void test_get_category_not_found_body() throws Exception {
 
-    Mockito.when(categoryService.getCategoryById(Mockito.anyLong())).thenReturn(null);
+    Mockito.doReturn(ResponseEntity.badRequest().body("Category not found")).when(categoryService)
+        .getCategoryById(Mockito.anyLong());
 
     mockMvc.perform(MockMvcRequestBuilders.get("/api/category/1")
         .contentType("application/json"))
@@ -100,7 +103,7 @@ public class CategoryControllerTest {
 
     Category category = createCategory("Teste");
 
-    Mockito.when(categoryService.getCategories()).thenReturn(java.util.Arrays.asList(category));
+    Mockito.doReturn(ResponseEntity.ok(category)).when(categoryService).getCategories();
 
     mockMvc.perform(MockMvcRequestBuilders.get("/api/category/")
         .contentType("application/json"))
