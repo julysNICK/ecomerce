@@ -1,9 +1,11 @@
 package com.julys.eccomerce.eccomerce.service.productOrder;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import com.julys.eccomerce.eccomerce.dao.order.OrderDAO;
 import com.julys.eccomerce.eccomerce.dao.product.ProductDAO;
@@ -61,6 +63,27 @@ public class ProductOrderServiceImpl implements ProductOrderService {
       productOrder.setProduct(productFind);
 
       productOrder.setQuantity(requestProductOrder.getQuantity());
+
+      RestTemplate restTemplate = new RestTemplate();
+
+      JSONObject request = new JSONObject();
+
+      JSONObject getCredit = new JSONObject();
+
+      getCredit.put("user_id", "1");
+
+      request.put("action", "get_credit_by_user_id");
+
+      request.put("get_credit", getCredit);
+
+      JSONObject responseCredit = new JSONObject(
+          restTemplate.postForEntity("http://localhost:4000/submission",
+              request.toString(), String.class).getBody());
+
+      String credit = responseCredit.getJSONObject("data").optJSONArray("cards").getJSONObject(0).optString("balance");
+
+      System.out
+          .println(credit);
 
       return ResponseEntity.status(201).body(productOrderDAO.createProductOrder(productOrder));
     } catch (DataIntegrityViolationException ex) {
