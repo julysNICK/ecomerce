@@ -44,6 +44,27 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         return ResponseEntity.badRequest().body("Quantity is 0");
       }
 
+      RestTemplate restTemplate = new RestTemplate();
+
+      JSONObject request = new JSONObject();
+
+      JSONObject getCredit = new JSONObject();
+
+      getCredit.put("user_id", "10");
+
+      request.put("action", "get_credit_by_user_id");
+
+      request.put("get_credit", getCredit);
+
+      JSONObject responseCredit = new JSONObject(
+          restTemplate.postForEntity("http://localhost:4000/submission",
+              request.toString(), String.class).getBody());
+
+      String credit = responseCredit.getJSONObject("data").optJSONArray("cards").getJSONObject(0).optString("balance");
+
+      System.out
+          .println(credit);
+
       Product productFind = productService.findById(requestProductOrder.getIdProduct());
 
       if (productFind == null) {
@@ -64,27 +85,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
       productOrder.setQuantity(requestProductOrder.getQuantity());
 
-      RestTemplate restTemplate = new RestTemplate();
-
-      JSONObject request = new JSONObject();
-
-      JSONObject getCredit = new JSONObject();
-
-      getCredit.put("user_id", "1");
-
-      request.put("action", "get_credit_by_user_id");
-
-      request.put("get_credit", getCredit);
-
-      JSONObject responseCredit = new JSONObject(
-          restTemplate.postForEntity("http://localhost:4000/submission",
-              request.toString(), String.class).getBody());
-
-      String credit = responseCredit.getJSONObject("data").optJSONArray("cards").getJSONObject(0).optString("balance");
-
-      System.out
-          .println(credit);
-
       return ResponseEntity.status(201).body(productOrderDAO.createProductOrder(productOrder));
     } catch (DataIntegrityViolationException ex) {
 
@@ -101,6 +101,10 @@ public class ProductOrderServiceImpl implements ProductOrderService {
       return ResponseEntity.badRequest().body("Error creating Product Order");
 
     } catch (Exception e) {
+
+      if (e.getMessage().contains("404")) {
+        return ResponseEntity.badRequest().body("Error creating Product Order why user not card please create card");
+      }
 
       return ResponseEntity.badRequest().body("Error creating Product Order");
     }

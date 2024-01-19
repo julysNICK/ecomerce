@@ -47,6 +47,9 @@ public class User implements UserDetails {
   @Column(name = "email", nullable = false)
   private String email;
 
+  @Column(name = "id_api_payment", nullable = true)
+  private int idApiPayment;
+
   @Enumerated(EnumType.STRING)
   @Column(name = "role", nullable = false)
   private com.julys.eccomerce.eccomerce.entity.Role role;
